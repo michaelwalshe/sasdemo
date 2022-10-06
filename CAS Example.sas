@@ -1,6 +1,16 @@
 /* Start local library */
 libname gym "/home/michael.walshe@amadeus.co.uk/repos/Demo/data";
 
+
+
+
+
+
+
+
+
+
+
 /* Start cas session */
 cas casdemo
 	sessopts=(caslib=public timeout=3600);
@@ -8,6 +18,19 @@ cas casdemo
 /* Setup SAS libref connection to CAS library */
 libname public cas caslib=public;
 libname casuser cas caslib=casuser;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -33,6 +56,16 @@ proc casutil session=casdemo;
 	load data=gym.members promote;
 	load data=gym.gym_summary promote;
 run;
+
+
+
+
+
+
+
+
+
+
 
 proc casutil session=casdemo;
 	save casdata="members" replace;
@@ -61,12 +94,6 @@ run;
  	 
  	if achieving_target; 
  run; 
- 
-
-
-
-
-
 
 /* CAS data step*/
  data public.members_new; 
@@ -82,10 +109,25 @@ run;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* CAS has numerous benefits.... */
 proc sort data=public.big_members out=public.big_members_srt;
 	by gym_id;
 run;
+
 
 
 data public.members_extended;
@@ -99,6 +141,17 @@ run;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 /*Procedure exe*/
 proc freq data=gym.big_members;
     table gender * country;
@@ -107,6 +160,10 @@ run;
 proc freqtab data=public.big_members;
     table gender * country;
 run;
+
+
+
+
 
 
 

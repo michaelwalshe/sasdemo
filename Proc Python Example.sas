@@ -62,7 +62,7 @@ run;
 
 
 /* Execute python scripts/modules using proc python */
-proc python infile="/home/sasdemo/Demo/python_example.py";
+proc python infile="/home/michael.walshe@amadeus.co.uk/repos/Demo/python_example.py";
 submit;
 
 # Read in SAS dataset
@@ -107,7 +107,7 @@ run;
 
 
 /*Can re-use variables across procs*/
-proc python;
+proc python restart;
 submit;
 print(df.head())
 endsubmit;
