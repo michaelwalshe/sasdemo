@@ -1,4 +1,4 @@
-libname gym "/home/michael.walshe@amadeus.co.uk/repos/Demo/data";
+libname gym "/export/sas-viya/homes/viya_admin/demo/data";
 
 
 /* Get gym info from datalines */
@@ -416,15 +416,15 @@ Wales,BFG60,Swansea,51.6214,-3.9436,Big,3340,3243,1763,3933,2170,3381615.00,2998
 run;
 
 /* Increase the size of members */
-%macro make_big_members;
+%macro make_large_ds;
 
-data gym.big_members;
+data gym.members_large;
     %do i=1 %to 100;
     	set gym.members;
     	output;
     %end;
 run;
 
-%mend make_big_members;
+%mend make_large_ds;
 
-%make_big_members;
+%make_large_ds;
