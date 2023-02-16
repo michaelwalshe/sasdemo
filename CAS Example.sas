@@ -1,5 +1,5 @@
 /* Start local library */
-libname gym "/home/michael.walshe@amadeus.co.uk/repos/Demo/data";
+libname gym "/export/sas-viya/homes/viya_admin/demo/data";
 
 
 
@@ -50,9 +50,9 @@ libname casuser cas caslib=casuser;
 proc casutil session=casdemo;
 	droptable casdata="members" quiet;
 	droptable casdata="gym_summary" quiet;
-	droptable casdata="big_members" quiet;
+	droptable casdata="members_large" quiet;
 
-	load data=gym.big_members promote;
+	load data=gym.members_large promote;
 	load data=gym.members promote;
 	load data=gym.gym_summary promote;
 run;
@@ -70,7 +70,7 @@ run;
 proc casutil session=casdemo;
 	save casdata="members" replace;
 	save casdata="gym_summary" replace;
-	save casdata="big_members" replace;
+	save casdata="members_large" replace;
 run;
 
 
@@ -86,7 +86,7 @@ run;
 
 /*Regular data step*/
  data members_new; 
- 	set gym.big_members; 
+ 	set gym.members_large; 
  	if gym_size = "Small" then do; 
  		gym_target_members = gym_target_members * 0.8; 
  	end; 
@@ -97,7 +97,7 @@ run;
 
 /* CAS data step*/
  data public.members_new; 
- 	set public.big_members; 
+ 	set public.members_large; 
  	if gym_size = "Small" then do; 
  		gym_target_members = gym_target_members * 0.8; 
  	end; 
@@ -124,14 +124,14 @@ run;
 
 
 /* CAS has numerous benefits.... */
-proc sort data=public.big_members out=public.big_members_srt;
+proc sort data=public.members_large out=public.members_large_srt;
 	by gym_id;
 run;
 
 
 
 data public.members_extended;
-	merge public.big_members
+	merge public.members_large
 	      public.gym_summary(keep=gym_id total_revenue);
 	by gym_id;
 	
@@ -153,11 +153,11 @@ run;
 
 
 /*Procedure exe*/
-proc freq data=gym.big_members;
+proc freq data=gym.members_large;
     table gender * country;
 run;
 
-proc freqtab data=public.big_members;
+proc freqtab data=public.members_large;
     table gender * country;
 run;
 
