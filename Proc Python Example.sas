@@ -62,7 +62,7 @@ run;
 
 
 /* Execute python scripts/modules using proc python */
-proc python infile="/home/michael.walshe@amadeus.co.uk/repos/Demo/python_example.py";
+proc python infile="/nfs/demo/sasdemo/python_example.py";
 submit;
 
 # Read in SAS dataset

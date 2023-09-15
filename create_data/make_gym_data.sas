@@ -1,4 +1,4 @@
-libname gym "/export/sas-viya/homes/viya_admin/demo/data";
+libname gym "/nfs/demo/sasdemo/data";
 
 
 /* Get gym info from datalines */
