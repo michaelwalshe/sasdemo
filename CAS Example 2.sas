@@ -150,7 +150,7 @@ run;
 
 
 /*Procedure exe*/
-proc freq data=data.members_large;
+proc freq data=data.cirrhosis_large;
     table Status * Stage;
 run;
 
