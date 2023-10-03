@@ -1,5 +1,5 @@
 /* Start local library */
-libname gym "/export/sas-viya/homes/viya_admin/demo/data";
+libname data "/nfs/demo/sasdemo/data";
 
 
 
@@ -12,11 +12,10 @@ libname gym "/export/sas-viya/homes/viya_admin/demo/data";
 
 
 /* Start cas session */
-cas casdemo
-	sessopts=(caslib=public timeout=3600);
+cas casdemo sessopts=( caslib=public timeout=3600);
 
 /* Setup SAS libref connection to CAS library */
-libname public cas caslib=public;
+libname public cas caslib="Public";
 libname casuser cas caslib=casuser;
 
 
@@ -48,13 +47,11 @@ libname casuser cas caslib=casuser;
 
 /*casutil examples*/
 proc casutil session=casdemo;
-	droptable casdata="members" quiet;
-	droptable casdata="gym_summary" quiet;
-	droptable casdata="members_large" quiet;
+	droptable casdata="cirrhosis" quiet;
+	droptable casdata="cirrhosis_large" quiet;
 
-	load data=gym.members_large promote;
-	load data=gym.members promote;
-	load data=gym.gym_summary promote;
+	load data=data.cirrhosis_large promote;
+	load data=data.cirrhosis promote;
 run;
 
 
@@ -63,14 +60,13 @@ run;
 
 
 
-
+ 
 
 
 
 proc casutil session=casdemo;
-	save casdata="members" replace;
-	save casdata="gym_summary" replace;
-	save casdata="members_large" replace;
+	save casdata="cirrhosis" replace;
+	save casdata="cirrhosis_large" replace;
 run;
 
 
@@ -85,25 +81,31 @@ run;
 
 
 /*Regular data step*/
- data members_new; 
- 	set gym.members_large; 
- 	if gym_size = "Small" then do; 
- 		gym_target_members = gym_target_members * 0.8; 
- 	end; 
- 	achieving_target = gym_target_members >= gym_current_members; 
- 	 
- 	if achieving_target; 
- run; 
+data cirrhosis_adj; 
+	set data.cirrhosis_large; 
+	if Drug = "D-penicillamine" then do; 
+	 	platelets_anormality = Platelets < 180; 
+	end; 
+	else do;
+		platelets_anormality = Platelets < 180; 
+ 	end;
+
+	if platelets_anormality; 
+run; 
+
+
 
 /* CAS data step*/
- data public.members_new; 
- 	set public.members_large; 
- 	if gym_size = "Small" then do; 
- 		gym_target_members = gym_target_members * 0.8; 
- 	end; 
- 	achieving_target = gym_target_members >= gym_current_members; 
- 	 
- 	if achieving_target; 
+ data public.cirrhosis_adj; 
+	set public.cirrhosis_large; 
+		if Drug = "D-penicillamine" then do; 
+	 	platelets_anormality = Platelets < 180; 
+	end; 
+	else do;
+		platelets_anormality = Platelets < 180; 
+ 	end;
+
+	if platelets_anormality; 
  run; 
 
 
@@ -124,18 +126,13 @@ run;
 
 
 /* CAS has numerous benefits.... */
-proc sort data=public.members_large out=public.members_large_srt;
-	by gym_id;
-run;
+data public.cirrhosis_adj2;
+    set public.cirrhosis_large; 
+    by Drug;
 
-
-
-data public.members_extended;
-	merge public.members_large
-	      public.gym_summary(keep=gym_id total_revenue);
-	by gym_id;
-	
-	prop_of_revenue = total_payments / total_revenue;
+    if first.Drug then total = 0;
+    total + N_Days;
+    if last.Drug then output;
 run;
 
 
@@ -153,12 +150,12 @@ run;
 
 
 /*Procedure exe*/
-proc freq data=gym.members_large;
-    table gender * country;
+proc freq data=data.cirrhosis_large;
+    table Status * Stage;
 run;
 
-proc freqtab data=public.members_large;
-    table gender * country;
+proc freqtab data=public.cirrhosis_large;
+    table Status * Stage;
 run;
 
 
