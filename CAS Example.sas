@@ -1,5 +1,5 @@
 /* Start local library */
-libname data "/nfs/demo/sasdemo/data";
+libname gym "/nfs/demo/sasdemo/data";
 
 
 
@@ -45,13 +45,16 @@ libname casuser cas caslib=casuser;
 
 
 
+
 /*casutil examples*/
 proc casutil session=casdemo;
-	droptable casdata="cirrhosis" quiet;
-	droptable casdata="cirrhosis_large" quiet;
+	droptable casdata="members" quiet;
+	droptable casdata="gym_summary" quiet;
+	droptable casdata="members_large" quiet;
 
-	load data=data.cirrhosis_large promote;
-	load data=data.cirrhosis promote;
+	load data=gym.members_large promote;
+	load data=gym.members promote;
+	load data=gym.gym_summary promote;
 run;
 
 
@@ -60,13 +63,14 @@ run;
 
 
 
- 
+
 
 
 
 proc casutil session=casdemo;
-	save casdata="cirrhosis" replace;
-	save casdata="cirrhosis_large" replace;
+	save casdata="members" replace;
+	save casdata="gym_summary" replace;
+	save casdata="members_large" replace;
 run;
 
 
@@ -81,31 +85,25 @@ run;
 
 
 /*Regular data step*/
-data cirrhosis_adj; 
-	set data.cirrhosis_large; 
-	if Drug = "D-penicillamine" then do; 
-	 	platelets_anormality = Platelets < 180; 
-	end; 
-	else do;
-		platelets_anormality = Platelets < 180; 
- 	end;
-
-	if platelets_anormality; 
-run; 
-
-
+ data members_new; 
+ 	set gym.members_large; 
+ 	if gym_size = "Small" then do; 
+ 		gym_target_members = gym_target_members * 0.8; 
+ 	end; 
+ 	achieving_target = gym_target_members >= gym_current_members; 
+ 	 
+ 	if achieving_target; 
+ run; 
 
 /* CAS data step*/
- data public.cirrhosis_adj; 
-	set public.cirrhosis_large; 
-		if Drug = "D-penicillamine" then do; 
-	 	platelets_anormality = Platelets < 180; 
-	end; 
-	else do;
-		platelets_anormality = Platelets < 180; 
- 	end;
-
-	if platelets_anormality; 
+ data public.members_new; 
+ 	set public.members_large; 
+ 	if gym_size = "Small" then do; 
+ 		gym_target_members = gym_target_members * 0.8; 
+ 	end; 
+ 	achieving_target = gym_target_members >= gym_current_members; 
+ 	 
+ 	if achieving_target; 
  run; 
 
 
@@ -126,14 +124,16 @@ run;
 
 
 /* CAS has numerous benefits.... */
-data public.cirrhosis_adj2;
-    set public.cirrhosis_large; 
-    by Drug;
-
-    if first.Drug then total = 0;
-    total + N_Days;
-    if last.Drug then output;
+data public.members_extended;
+	merge public.members_large
+	      public.gym_summary(keep=gym_id total_revenue);
+	by gym_id;
+	
+	prop_of_revenue = total_payments / total_revenue;
 run;
+
+
+
 
 
 
@@ -150,13 +150,15 @@ run;
 
 
 /*Procedure exe*/
-proc freq data=data.cirrhosis_large;
-    table Status * Stage;
+proc freq data=gym.members_large;
+    table gender * country;
 run;
 
-proc freqtab data=public.cirrhosis_large;
-    table Status * Stage;
+proc freqtab data=public.members_large;
+    table gender * country;
 run;
+
+
 
 
 

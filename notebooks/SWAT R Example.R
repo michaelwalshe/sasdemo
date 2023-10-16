@@ -16,16 +16,19 @@ cas.builtins.serverStatus(conn)
 # Create reference to data ----
 
 # Create a reference to in-memory tables, or load in local tables
-cirrhosis <- defCasTable(conn, "cirrhosis", caslib="public")
+gyms <- defCasTable(conn, "gym_summary", caslib="public")
+members <- defCasTable(conn, "members", caslib="public")
+
+
 
 
 
 # Use code to manipulate a SAS table as if it's an R data frame
-cirrhosis["Bilirubin_high"] <- cirrhosis["Bilirubin"] > 1.2
+gyms["achieving_target"] <- gyms[, "members_net_change"] > 0
 
 
-
-head(cirrhosis)
+members_subset <- members[members$country == "England"]
+head(members_subset)
 
 
 
@@ -33,36 +36,34 @@ head(cirrhosis)
 cas.builtins.loadActionSet(conn, actionSet="regression")
 
 output <- cas.regression.glm(
-  cirrhosis,
-  target = "Platelets",
-  inputs = c("Stage", "Status", "Drug", "Bilirubin_high", "Albumin", "Copper"),
-  nominals = c("Stage"),
+  gyms,
+  target = "total_revenue",
+  inputs = c("achieving_target", "Gym_Size", "Gym_Current_Members"),
   output = list(
-    casOut = list(name = "PlateletsPrediction", caslib="public", replace = TRUE),
+    casOut = list(name = "RevenuePrediction", caslib="public", replace = TRUE),
     copyvars = "all",
-    pred = "PredictedPlatelets",
-    resid = "ResidualPlatelets"
+    pred = "Predicted_Revenue",
   )
 )
 
 
-result <- defCasTable(conn, "PlateletsPrediction", caslib="public")
+result <- defCasTable(conn, "RevenuePrediction", caslib="public")
 
 head(result)
 
 
 # Integrate the results with R visualisations ----
 plot(
-  result$PredictedPlatelets,
-  result$Platelets,
-  xlab="Predicted Platelets",
-  ylab="Actual Platelets"
+  result$Predicted_Revenue,
+  result$total_revenue,
+  xlab="Predicted Revenue",
+  ylab="Actual Revenue"
 )
 
 
 result |>
   to.r.data.frame() |>
-  ggplot(aes(x=PredictedPlatelets, y=Platelets)) +
+  ggplot(aes(x=Predicted_Revenue, y=total_revenue)) +
   geom_point() +
   geom_abline(intercept=0, slope=1, color="red") +
-  labs(x="Predicted Platelets", y="Actual Platelets")
+  labs(x="Predicted Revenue", y="Actual Revenue")
