@@ -87,13 +87,11 @@ data cirrhosis_adj;
 	 	platelets_anormality = Platelets < 180; 
 	end; 
 	else do;
-		platelets_anormality = Platelets < 180; 
+		platelets_anormality = Platelets < 250; 
  	end;
 
 	if platelets_anormality; 
 run; 
-
-
 
 /* CAS data step*/
  data public.cirrhosis_adj; 
@@ -102,7 +100,7 @@ run;
 	 	platelets_anormality = Platelets < 180; 
 	end; 
 	else do;
-		platelets_anormality = Platelets < 180; 
+		platelets_anormality = Platelets < 250; 
  	end;
 
 	if platelets_anormality; 
