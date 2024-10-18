@@ -2,7 +2,7 @@
 library(swat)
 library(ggplot2)
 
-Sys.setenv(CAS_CLIENT_SSL_CA_LIST = "C:/SAS Viya/demo_CAS_ex_cert.crt")
+Sys.setenv(CAS_CLIENT_SSL_CA_LIST = "C:/SAS Viya/CAS_demo_ex_cert.crt")
 
 conn <- CAS(
   hostname = "sas-cas-server-default-bin-demo.uksouth.cloudapp.azure.com",

@@ -1,4 +1,4 @@
-options set=CAS_CLIENT_SSL_CA_LIST="C:\SAS Viya\demo_CAS_ex_cert.crt";
+options set=CAS_CLIENT_SSL_CA_LIST="C:\SAS Viya\CAS_demo_ex_cert.crt";
 
 cas viya4_cas
     host="sas-cas-server-default-bin-demo.uksouth.cloudapp.azure.com"
