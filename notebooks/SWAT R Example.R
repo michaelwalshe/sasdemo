@@ -73,6 +73,12 @@ result |>
   labs(x = "Predicted Platelets", y = "Actual Platelets")
 
 
+
+
+
+
+
+
 # Alternatively, created in R ----
 
 cirrhosis_df <- to.r.data.frame(cirrhosis)
