@@ -5,7 +5,7 @@ proc iml;
 	submit / R;
 		print("Hello")
 	endsubmit;
-run;
+quit;
 
 
 
@@ -24,4 +24,4 @@ proc iml;
 	endsubmit;
 
 	call ImportDataSetFromR("work.pred_actual", "pred_actual");
-run;
+	quit;
