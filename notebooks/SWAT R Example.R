@@ -1,6 +1,7 @@
 # Setting up a SWAT Connection for R ----
 library(swat)
 library(ggplot2)
+library(geomtextpath)
 
 Sys.setenv(CAS_CLIENT_SSL_CA_LIST = "C:/SAS Viya/CAS_demo_ex_cert.crt")
 
@@ -68,5 +69,26 @@ result |>
   to.r.data.frame() |>
   ggplot(aes(x = PredictedPlatelets, y = Platelets)) +
   geom_point() +
-  geom_abline(intercept = 0, slope = 1, color = "red") +
+  geom_smooth(method = "lm", color = "red") +
+  labs(x = "Predicted Platelets", y = "Actual Platelets")
+
+
+# Alternatively, created in R ----
+
+cirrhosis_df <- to.r.data.frame(cirrhosis)
+
+ch_model <- glm(
+  Platelets ~ Stage + Status + Drug + Bilirubin_high + Albumin + Copper,
+  data = cirrhosis_df
+)
+
+pred_actual <- data.frame(
+  actual = ch_model$model$Platelets,
+  predicted = predict(ch_model)
+)
+
+pred_actual |>
+  ggplot(aes(x = predicted, y = actual)) +
+  geom_point() +
+  geom_smooth(method = "lm", color = "red") +
   labs(x = "Predicted Platelets", y = "Actual Platelets")
