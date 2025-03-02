@@ -1,9 +1,8 @@
 libname gym "/nfs/demo/sasdemo/data";
 
-
-  /* Get gym info from datalines */
-  data _gyms;
-    infile datalines delimiter=','; 
+/* Get gym info from datalines */
+data _gyms;
+    infile datalines delimiter=',';
     input Gym_ID $ Gym_Name :$32. Country :$32. Gym_Latitude Gym_Longitude Gym_Target_Members Gym_Current_Members Target_flag Gym_Size $ Gym_Travel $;
     datalines;
   BFG01,Barnet,England,51.652931,-0.19961,2330,2376,1,Medium,M
@@ -67,80 +66,76 @@ libname gym "/nfs/demo/sasdemo/data";
   BFG59,Newport,Wales,51.5842,-2.9977,2990,3109,1,Medium,M
   BFG60,Swansea,Wales,51.6214,-3.9436,3243,3340,1,Big,H
   ;
-  run;
-  
-  /* Set labels for columns */
-  data gyms;
+run;
+
+/* Set labels for columns */
+data gyms;
     set _gyms;
     label gym_current_members='Gym Current Members'
-          gym_longitude='Gym Longitude'
-          gym_latitude='Gym Latitude'
-          gym_target_members='Gym Target Members'
-          gym_size='Gym Size'
-          gym_name='Gym Name'
-          gym_id='Gym ID'
-          gym_travel='Gym Travel';
-  run;
-  
-  proc delete data=_gyms; run;
-  
-  /* Generate members data */
-  *Set date range for data to be generated over. These should be full years;
-      %let gym_open=01JAN2016;
-      %let year1=2017;
-      %let year2=2018;
-      %let year3=2019;
-      %let last_date=31DEC2019;
-  
-  data members;
+        gym_longitude='Gym Longitude'
+        gym_latitude='Gym Latitude'
+        gym_target_members='Gym Target Members'
+        gym_size='Gym Size'
+        gym_name='Gym Name'
+        gym_id='Gym ID'
+        gym_travel='Gym Travel';
+run;
+
+proc delete data=_gyms;
+run;
+
+/* Generate members data */
+*Set date range for data to be generated over. These should be full years;
+%let gym_open=01JAN2016;
+%let year1=2017;
+%let year2=2018;
+%let year3=2019;
+%let last_date=31DEC2019;
+
+data members;
     set gyms;
-  
     length member_type $8. member_id $12.;
-  
     format start_date date9. 
-           start_month  monyy5. 
-           start_year  year.
-           join_fee total_payments monthly_fee nlmnlgbp12.2
-           height weight avg_visits_week  
-           distance_travelled comma12.1 ;
-  
+        start_month  monyy5. 
+        start_year  year.
+        join_fee total_payments monthly_fee nlmnlgbp12.2
+        height weight avg_visits_week  
+        distance_travelled comma12.1;
     label member_id = "Member ID"
-          start_date = "Start Date"
-          gender = "Gender"
-          ageband = "Age Band"
-          height="Height (cm)"
-          weight="Weight (kg)"
-          join_fee = "Joining Fee"
-          monthly_fee ="Monthly Fee" 
-          member_type = "Membership Type"
-          gp_ref="GP Referral"
-          total_payments="Total Membership Costs"
-          start_month="Start Month"
-          start_year="Start Year"
-          avg_visits_week = 'Average Visits per Week'
-          avg_visit_length= 'Average Visit Length (mins)'
-          distance_travelled='Distance Travelled (miles)';
-  
-     drop _: i;
-  
+        start_date = "Start Date"
+        gender = "Gender"
+        ageband = "Age Band"
+        height="Height (cm)"
+        weight="Weight (kg)"
+        join_fee = "Joining Fee"
+        monthly_fee ="Monthly Fee" 
+        member_type = "Membership Type"
+        gp_ref="GP Referral"
+        total_payments="Total Membership Costs"
+        start_month="Start Month"
+        start_year="Start Year"
+        avg_visits_week = 'Average Visits per Week'
+        avg_visit_length= 'Average Visit Length (mins)'
+        distance_travelled='Distance Travelled (miles)';
+    drop _: i;
+
     * First we set up a number of arrays which will play a part in controlling the random data generation;
     * The elements of each array must sum to 1;
     array mth&year1.[12] _temporary_ (0.130 0.115 0.095 0.085 0.100 0.085 0.080 0.060 0.075 0.070 0.055 0.050);
     array mth&year2.[12] _temporary_ (0.111 0.101 0.092 0.102 0.104 0.096 0.084 0.067 0.065 0.059 0.061 0.058);
     array mth&year3.[12] _temporary_ (0.112 0.107 0.088 0.078 0.084 0.077 0.075 0.073 0.079 0.083 0.067 0.077);
-  
+
     * Duration of membership in months - assume min 6 month contracts for students, minimum 12 month others;
-  /*  array dur_stu[8] _temporary_ (0.21  0.14  0.11  0.10  0.09  0.12  0.10  0.13);*/
-  /*  array dur[20] _temporary_ (0.35 0.28 0.12 0.11 0.09 0.025 0.0025 0.0005 0.007 0.006 0.006 0.005 0.004 0.003 0.002 0.0001 0.001 0.001 0.0003 0.0001);*/
-  
+    /*  array dur_stu[8] _temporary_ (0.21  0.14  0.11  0.10  0.09  0.12  0.10  0.13);*/
+    /*  array dur[20] _temporary_ (0.35 0.28 0.12 0.11 0.09 0.025 0.0025 0.0005 0.007 0.006 0.006 0.005 0.004 0.003 0.002 0.0001 0.001 0.001 0.0003 0.0001);*/
     * Age bands: 16-19, 20-24, 25-29, 30-34, 35-44,45-64, 65+;
     * Male age bands, Female age bands;
     array mage[7] _temporary_ (0.149 0.195 0.115 0.107 0.184 0.164 0.086);
     array fage[7] _temporary_ (0.115 0.182 0.096 0.106 0.187 0.203 0.111);
-  
+
     * Vary membership type within age group;
     * pot1 = Student pot2 = Standard pot3 = Gold;
-    * Ages a=16-19 b=20-24  c=25-29  d=30-34  e=35-44  f=45-64  g=65+  ;
+    * Ages a=16-19 b=20-24  c=25-29  d=30-34  e=35-44  f=45-64  g=65+;
     array memtype_a {3} _temporary_ (0.65 0.3 0.05);
     array memtype_b {3} _temporary_ (0.55 0.375 0.075);
     array memtype_c {3} _temporary_ (0.4 0.475 0.125);
@@ -148,209 +143,297 @@ libname gym "/nfs/demo/sasdemo/data";
     array memtype_e {3} _temporary_ (0.12 0.715 0.165);
     array memtype_f {3} _temporary_ (0.03 0.72 0.25);
     array memtype_g {3} _temporary_ (0.01 0.84 0.15);
-  
+
     * BMI;
     array bmi_f_young[5] _temporary_ (0.05 0.4 0.35 0.1 0.1);
     array bmi_f_mid[5]   _temporary_ (0.04 0.42 0.31 0.18 0.05);
     array bmi_f_old[5]   _temporary_ (0.02 0.31 0.3 0.22 0.15);
     array bmi_f_older[5] _temporary_ (0.02 0.20 0.41 0.25 0.12);
-  
     array bmi_m_young[5] _temporary_ (0.02 0.41 0.29 0.23 0.05);
     array bmi_m_mid[5]   _temporary_ (0.02 0.32 0.3 0.28 0.08);
     array bmi_m_old[5]   _temporary_ (0.01 0.25 0.4 0.28 0.1);
     array bmi_m_older[5] _temporary_ (0.01 0.20 0.4 0.3 0.09);
-  
-  
+
     * Data is going to be generated pseudo-randomly but we need the 
-      data to be the same each time the program is run(!);   
+    data to be the same each time the program is run(!);
     call streaminit(340);
-  
+
     do i=1 to gym_current_members;
-  
         * Generate member id;
         member_id = catx('_',gym_id,put(i,z5.));
-  
+
         * Generate gender;
-        if mod(input(scan(gym_id,2,'G'),8.),2) = 0 and not mod(input(scan(gym_id,2,'G'),8.),5)=0 then _ratio=0.47;
+        if mod(input(scan(gym_id,2,'G'),8.),2) = 0 and not mod(input(scan(gym_id,2,'G'),8.),5)=0 then
+            _ratio=0.47;
         else _ratio = 0.56;
         _rand_num=round((rand('uniform')/12)-0.041,0.001);
-  
         _gender = rand('table',_ratio+_rand_num,1-_ratio-_rand_num);
-        if _gender=2 then gender='Female';
+
+        if _gender=2 then
+            gender='Female';
         else gender='Male';
-  
-         * Generate three complete years of data plus year to date for this year;
-        if substr(gym_name,3,1) < 'i' then _year=year("&gym_open."d)+rand("Table",0.13,0.26 ,0.29 , 0.32)-1;
+
+        * Generate three complete years of data plus year to date for this year;
+        if substr(gym_name,3,1) < 'i' then
+            _year=year("&gym_open."d)+rand("Table",0.13,0.26 ,0.29 , 0.32)-1;
         else _year=year("&gym_open."d)+rand("Table",0.12,0.33 ,0.29 , 0.26)-1;
         _fluctuation=0.05*rand("Normal");
-  
+
         * Generate random join month using the three patterns we created above;
         *dates are fixed;
-        if round(rand('uniform'),0.01) < 0.25 then start_date="&gym_open."d;
-        else do;
-          if _year=&year1 then _month=rand("Table", of mth&year1.[*]);
-          else if _year=&year2 then _month=rand("Table", of mth&year2.[*]);
-          else _month=rand("Table", of mth&year3.[*]);
-  
-          * Generate day in month uniformly across the month;
-          if _month in (1,3,5,8,10,12) then _days=31;
-          else if _month in (4,6,7,9,11) then _days=30;
-          else if _month=2 and mod(_year,4) ne 0 then _days=28;
-          else _days=29;
-          _day=ceil(rand("Uniform")*_days);
-  
-          start_date=mdy(_month,_day,_year);
-        end;
-  
+        if round(rand('uniform'),0.01) < 0.25 then
+            start_date="&gym_open."d;
+        else
+            do;
+                if _year=&year1 then
+                    _month=rand("Table", of mth&year1.[*]);
+                else if _year=&year2 then
+                    _month=rand("Table", of mth&year2.[*]);
+                else _month=rand("Table", of mth&year3.[*]);
+
+                * Generate day in month uniformly across the month;
+                if _month in (1,3,5,8,10,12) then
+                    _days=31;
+                else if _month in (4,6,7,9,11) then
+                    _days=30;
+                else if _month=2 and mod(_year,4) ne 0 then
+                    _days=28;
+                else _days=29;
+                _day=ceil(rand("Uniform")*_days);
+                start_date=mdy(_month,_day,_year);
+            end;
+
         start_month=intnx("MONTH",start_date,0,'b');
         start_year=intnx("YEAR",start_date,0,'b');
-  
+
         * Generate ageband;
-        if gender='Male' then _ageband=rand("Table", of mage[*]);
+        if gender='Male' then
+            _ageband=rand("Table", of mage[*]);
         else _ageband=rand("Table", of fage[*]);
-        
+
         * Generate member type;
-        if _ageband=1 then _memtype=rand("Table", of memtype_a[*]);
-        else if _ageband=2 then _memtype=rand("Table", of memtype_b[*]);
-        else if _ageband=3 then _memtype=rand("Table", of memtype_c[*]);
-        else if _ageband=4 then _memtype=rand("Table", of memtype_d[*]);
-        else if _ageband=5 then _memtype=rand("Table", of memtype_e[*]);
-        else if _ageband=6 then _memtype=rand("Table", of memtype_f[*]);
-        else if _ageband=7 then _memtype=rand("Table", of memtype_g[*]);
-  
-        if _memtype=1 then member_type="Student";
-        else if _memtype=2 then member_type="Standard";
+        if _ageband=1 then
+            _memtype=rand("Table", of memtype_a[*]);
+        else if _ageband=2 then
+            _memtype=rand("Table", of memtype_b[*]);
+        else if _ageband=3 then
+            _memtype=rand("Table", of memtype_c[*]);
+        else if _ageband=4 then
+            _memtype=rand("Table", of memtype_d[*]);
+        else if _ageband=5 then
+            _memtype=rand("Table", of memtype_e[*]);
+        else if _ageband=6 then
+            _memtype=rand("Table", of memtype_f[*]);
+        else if _ageband=7 then
+            _memtype=rand("Table", of memtype_g[*]);
+
+        if _memtype=1 then
+            member_type="Student";
+        else if _memtype=2 then
+            member_type="Standard";
         else member_type="Gold";
-  
+
         * Fluctuate the age bands a little more (member type needs to be created already);
         _fluctuation2=0.05*rand("Normal");
-        if mod(_year,3)=0 and rand("Uniform")> 0.80+_fluctuation2 then _ageband=min(_ageband+1,7);
-        else if mod(_year,2)=0 and rand("Uniform")> 0.85+_fluctuation2 then _ageband=min(_ageband+1,7);
-  
-        if _ageband=1 then ageband='16-19';
-        else if _ageband=2 then ageband='20-24';
-        else if _ageband=3 then ageband='25-29';
-        else if _ageband=4 then ageband='30-34';
-        else if _ageband=5 then ageband='35-44';
-        else if _ageband=6 then ageband='45-64';
-        else if _ageband=7 then ageband='65+';
-  
-  
+
+        if mod(_year,3)=0 and rand("Uniform")> 0.80+_fluctuation2 then
+            _ageband=min(_ageband+1,7);
+        else if mod(_year,2)=0 and rand("Uniform")> 0.85+_fluctuation2 then
+            _ageband=min(_ageband+1,7);
+
+        if _ageband=1 then
+            ageband='16-19';
+        else if _ageband=2 then
+            ageband='20-24';
+        else if _ageband=3 then
+            ageband='25-29';
+        else if _ageband=4 then
+            ageband='30-34';
+        else if _ageband=5 then
+            ageband='35-44';
+        else if _ageband=6 then
+            ageband='45-64';
+        else if _ageband=7 then
+            ageband='65+';
+
         * Set up costs joinfee and monthly_fee;
-        if member_type="Standard" then do; 
-          if year(start_date) = 2017 then join_fee=25;
-          else if year(start_date) = 2018 then join_fee=30;
-            else join_fee=35;
-            monthly_fee=40;
-        end;
-  
-        else if member_type="Student" then do;
-        if month(start_date) in (1,2,3) then join_fee=.;
-            else join_fee=15;
-            monthly_fee=35;
-        end;
-  
-        else if member_type="Gold" then do;
-          join_fee=75;
-          monthly_fee=60;
-        end;
-  
+        if member_type="Standard" then
+            do;
+                if year(start_date) = 2017 then
+                    join_fee=25;
+                else if year(start_date) = 2018 then
+                    join_fee=30;
+                else join_fee=35;
+                monthly_fee=40;
+            end;
+        else if member_type="Student" then
+            do;
+                if month(start_date) in (1,2,3) then
+                    join_fee=.;
+                else join_fee=15;
+                monthly_fee=35;
+            end;
+        else if member_type="Gold" then
+            do;
+                join_fee=75;
+                monthly_fee=60;
+            end;
+
         *calculate current paid membership fees assuming all members are still members;
         total_payments=sum(join_fee,monthly_fee*(1+intck("month",start_date,"&last_date."d)));
-      
+
         * Make ~10% of Standard Gym members GP Referrals;
-        if member_type="Standard" and rand("Uniform")<=0.1 then gp_ref="Y";
+        if member_type="Standard" and rand("Uniform")<=0.1 then
+            gp_ref="Y";
         else gp_ref="N";
-  
-        * Generate height;  
-        if gender='Male' then do;
-          height= round(rand("normal",176,6),0.1);
-          if height > 200 then height=height-15;
-          else if height < 155 then height=height+15;
-        end;
-        else do;
-          height= round(rand("normal",165,5),0.1);
-          if height > 185 then height=height-15;
-          else if height < 145 then height=height+15;
-        end;
-  
+
+        * Generate height;
+        if gender='Male' then
+            do;
+                height= round(rand("normal",176,6),0.1);
+
+                if height > 200 then
+                    height=height-15;
+                else if height < 155 then
+                    height=height+15;
+            end;
+        else
+            do;
+                height= round(rand("normal",165,5),0.1);
+
+                if height > 185 then
+                    height=height-15;
+                else if height < 145 then
+                    height=height+15;
+            end;
+
         * Generate BMI for each member;
-        if gender='Male' then do;
-          if ageband in ('16-19', '20-24') then _range=rand("Table", of bmi_m_young[*]);
-          else if ageband in ('25-29', '30-34') then _range=rand("Table", of bmi_m_mid[*]);
-          else if ageband in ('35-44', '45-64') then _range=rand("Table", of bmi_m_old[*]);
-          else if ageband = '65+' then _range=rand("Table", of bmi_m_older[*]);
-        end;
-    
-        else do;
-          if ageband in ('16-19', '20-24') then _range=rand("Table", of bmi_f_young[*]);
-          else if ageband in ('25-29', '30-34') then _range=rand("Table", of bmi_f_mid[*]);
-          else if ageband in ('35-44', '45-64') then _range=rand("Table", of bmi_f_old[*]);
-          else if ageband = '65+' then _range=rand("Table", of bmi_f_older[*]);
-        end;
-  
-         if gp_ref = 'Y' then _bmi=round(34+abs(rand('normal'))*3,0.1);
-        else if _range=1 then _bmi=round(18.5-abs(rand('normal')),0.1);
-        else if _range=2 then _bmi=round(18.5+rand('uniform')*6.5,0.1);
-        else if _range=3 then _bmi=round(25+rand('uniform')*5,0.1);
-        else if _range=4 then _bmi=round(30+abs(rand('normal'))*2.7,0.1);
-        else if _range=5 then _bmi=round(35+abs(rand('normal'))*2.7,0.1);
-  
-        if _bmi > 46 then _bmi=_bmi+10;
-  
+        if gender='Male' then
+            do;
+                if ageband in ('16-19', '20-24') then
+                    _range=rand("Table", of bmi_m_young[*]);
+                else if ageband in ('25-29', '30-34') then
+                    _range=rand("Table", of bmi_m_mid[*]);
+                else if ageband in ('35-44', '45-64') then
+                    _range=rand("Table", of bmi_m_old[*]);
+                else if ageband = '65+' then
+                    _range=rand("Table", of bmi_m_older[*]);
+            end;
+        else
+            do;
+                if ageband in ('16-19', '20-24') then
+                    _range=rand("Table", of bmi_f_young[*]);
+                else if ageband in ('25-29', '30-34') then
+                    _range=rand("Table", of bmi_f_mid[*]);
+                else if ageband in ('35-44', '45-64') then
+                    _range=rand("Table", of bmi_f_old[*]);
+                else if ageband = '65+' then
+                    _range=rand("Table", of bmi_f_older[*]);
+            end;
+
+        if gp_ref = 'Y' then
+            _bmi=round(34+abs(rand('normal'))*3,0.1);
+        else if _range=1 then
+            _bmi=round(18.5-abs(rand('normal')),0.1);
+        else if _range=2 then
+            _bmi=round(18.5+rand('uniform')*6.5,0.1);
+        else if _range=3 then
+            _bmi=round(25+rand('uniform')*5,0.1);
+        else if _range=4 then
+            _bmi=round(30+abs(rand('normal'))*2.7,0.1);
+        else if _range=5 then
+            _bmi=round(35+abs(rand('normal'))*2.7,0.1);
+
+        if _bmi > 46 then
+            _bmi=_bmi+10;
+
         * Now derive weight based on height and BMI;
         weight= round(_bmi * (height/100)*(height/100) ,0.1);
-  
+
         *Average Vistits per week and average visit length for each member;
         if ((gender='Male' and ageband in ('45-64','65+') ) or (gender='Female' and ageband in ('45-64','65+'))) 
-              and member_type='Gold' then do;
-          _avg_visits_week1='G1';
-          avg_visit_length=rand("integer",15,45);
-        end;
+            and member_type='Gold' then
+            do;
+                _avg_visits_week1='G1';
+                avg_visit_length=rand("integer",15,45);
+            end;
         else if ((gender='Female' and ageband in ('16-19','20-24')) or (gender='Male' and ageband in ('16-19','20-24')))   
-                and member_type='Student' then do;
-          _avg_visits_week1='G2';
-          avg_visit_length=rand("integer",90,180);
-        end;
-        else do;
-          _avg_visits_week1='G3';
-          if rand('uniform')<0.02 then avg_visit_length=rand("integer",15,45);
-          else if rand('uniform')<0.50 then avg_visit_length=rand("integer",45,60);
-          else if rand('uniform')<0.98 then avg_visit_length=rand("integer",60,90);
-          else avg_visit_length=rand("integer",90,180);
-        end;
-  
-        if _avg_visits_week1='G1' then avg_visits_week=rand("uniform")+1;
-        else if _avg_visits_week1='G2' then avg_visits_week=rand("uniform")+5;
-        else if _avg_visits_week1='G3' then avg_visits_week=rand("uniform")*7;
-  
-        if member_type = 'Student' and ageband = '65+' and gender ='Female' then member_type='Gold';
-        if member_type = 'Student' and ageband = '65+' and gender ='Male' then member_type='Standard';
-  
+            and member_type='Student' then
+            do;
+                _avg_visits_week1='G2';
+                avg_visit_length=rand("integer",90,180);
+            end;
+        else
+            do;
+                _avg_visits_week1='G3';
+
+                if rand('uniform')<0.02 then
+                    avg_visit_length=rand("integer",15,45);
+                else if rand('uniform')<0.50 then
+                    avg_visit_length=rand("integer",45,60);
+                else if rand('uniform')<0.98 then
+                    avg_visit_length=rand("integer",60,90);
+                else avg_visit_length=rand("integer",90,180);
+            end;
+
+        if _avg_visits_week1='G1' then
+            avg_visits_week=rand("uniform")+1;
+        else if _avg_visits_week1='G2' then
+            avg_visits_week=rand("uniform")+5;
+        else if _avg_visits_week1='G3' then
+            avg_visits_week=rand("uniform")*7;
+
+        if member_type = 'Student' and ageband = '65+' and gender ='Female' then
+            member_type='Gold';
+
+        if member_type = 'Student' and ageband = '65+' and gender ='Male' then
+            member_type='Standard';
+
         /*calculate distance they live from gyms*/
-        if gym_travel='L' then distance_travelled=abs(round(rand('normal',2.5,2),0.01));
-        else if gym_travel='M' then distance_travelled=abs(round(rand('normal',4,3),0.01));
-        else do;
-          distance_travelled=round(rand('normal',7,5),0.01);
-          if distance_travelled <0.01 then distance_travelled=abs(round(rand('normal',9,5),0.01));
-        end;
-  
-        if avg_visits_week =7 then distance_travelled=round(rand('normal',3,1),0.01);
-       
+        if gym_travel='L' then
+            distance_travelled=abs(round(rand('normal',2.5,2),0.01));
+        else if gym_travel='M' then
+            distance_travelled=abs(round(rand('normal',4,3),0.01));
+        else
+            do;
+                distance_travelled=round(rand('normal',7,5),0.01);
+
+                if distance_travelled <0.01 then
+                    distance_travelled=abs(round(rand('normal',9,5),0.01));
+            end;
+
+        if avg_visits_week =7 then
+            distance_travelled=round(rand('normal',3,1),0.01);
         output;
-   end; 
-  run;
-  
-  /* Load into libraries */
-  data gym.members;
+    end;
+run;
+
+/* Load into libraries */
+data gym.members;
     set members (drop=target_flag gym_travel);
-  run;
-  
-  /* Get gym summary from datalines */
-  data gym.gym_summary;
+run;
+
+/* Get gym summary from datalines */
+data gym.gym_summary;
     infile datalines delimiter=',';
     input Country :$32. Gym_ID $ Gym_Name :$32. Gym_Latitude Gym_Longitude Gym_Size $ Gym_Current_Members Gym_Target_Members members_leaving
-      members_new members_net_change monthly_fee monthly_fixed_cost total_joni_fees total_revenue;
+        members_new members_net_change monthly_fee monthly_fixed_cost total_join_fees total_revenue;
+    label
+        Gym_ID="Gym ID" 
+        Gym_Name="Gym Name" 
+        Gym_Latitude="Gym Latitude"
+        Gym_Longitude="Gym Longitude"
+        Gym_Size="Gym Size"
+        Gym_Current_Members="Gym Current Members"
+        Gym_Target_Members="Gym Target Members"
+        members_leaving="Gym Members Leaving"
+        members_new="Gym Members New"
+        members_net_change="Gym Members Net Change"
+        monthly_fee="Total Monthly Fee"
+        monthly_fixed_cost="Monthly Fixed Cost"
+        total_join_fees="Total Join Fees"
+        total_revenue="Total Revenue"
+    ;
     datalines;
   England,BFG01,Barnet,51.652931,-0.19961,Medium,2376,2330,1115,2731,1616,2500055.00,2314427.89,48440.00,2548495.00
   England,BFG02,Barnsley,53.552929,-1.48127,Medium,2229,2373,1073,2533,1460,2346065.00,1895903.91,45025.00,2391090.00
@@ -413,89 +496,42 @@ libname gym "/nfs/demo/sasdemo/data";
   Wales,BFG59,Newport,51.5842,-2.9977,Medium,3109,2990,1687,3748,2061,3276760.00,2632206.98,62375.00,3339135.00
   Wales,BFG60,Swansea,51.6214,-3.9436,Big,3340,3243,1763,3933,2170,3381615.00,2998279.47,68665.00,3450280.00
   ;
-  run;
-  
-  /* Increase the size of members */
-  %macro make_large_ds;
-  
-  data gym.members_large;
-      %do i=1 %to 100;
-        set gym.members;
-        output;
-      %end;
-  run;
-  
-  %mend make_large_ds;
-  
-  %make_large_ds;
-  
-  
-  /* Start cas session */
-  cas casdemo
+run;
+
+/* Increase the size of members */
+%macro make_large_ds;
+
+    data gym.members_large;
+        %do i=1 %to 100;
+            set gym.members;
+            output;
+        %end;
+    run;
+
+%mend make_large_ds;
+
+%make_large_ds;
+
+/* Start cas session */
+cas casdemo
     sessopts=(caslib=public timeout=3600);
-  
-  /* Setup SAS libref connection to CAS library */
-  libname public cas caslib=public;
-  libname casuser cas caslib=casuser;
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  /*casutil examples*/
-  proc casutil session=casdemo;
+
+/* Setup SAS libref connection to CAS library */
+libname public cas caslib=public;
+libname casuser cas caslib=casuser;
+
+/*casutil examples*/
+proc casutil session=casdemo;
     droptable casdata="members" quiet;
     droptable casdata="gym_summary" quiet;
     droptable casdata="members_large" quiet;
-  
     load data=gym.members_large promote;
     load data=gym.members promote;
     load data=gym.gym_summary promote;
-  run;
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  proc casutil session=casdemo;
+run;
+
+proc casutil session=casdemo;
     save casdata="members" replace;
     save casdata="gym_summary" replace;
     save casdata="members_large" replace;
-  run;
-  
-  
-  
-  
-  
-  
-  
-  
+run;
