@@ -1,1 +1,1376 @@
-{"id":"\"ke8shzrzfu\"","connections":[],"creationTimeStamp":"2025-08-21T08:21:32.512Z","description":"","eTag":"\"ke8shzrzfu\"","extendedProperties":{},"modifiedTimeStamp":"2025-08-21T08:20:23.308Z","name":"Example Flow.flw","nodes":{"id-1665035852227-10347":{"nodeType":"dataFlow","id":"id-1665035852227-10347","version":1,"name":"Swimlane 1","description":"","priority":0,"note":null,"properties":{"UI_PROP_IS_EXPANDED":"true","UI_PROP_LOCATION":"0 36.338623046875"},"stepId":"SWIMLANE_STEP","dataFlowAndBindings":{"dataFlow":{"id":null,"connections":[],"createdBy":null,"creationTimeStamp":"2025-08-21T08:21:32.511Z","description":"","eTag":null,"extendedProperties":{},"modifiedBy":null,"modifiedTimeStamp":"2025-08-21T08:21:32.511Z","name":"","nodes":{"id-1665034886019-3426":{"nodeType":"step","id":"id-1665034886019-3426","version":1,"name":"Libname","description":"","priority":0,"note":null,"properties":{"UI_PROP_LOCATION":"65 63.338623046875","UI_PROP_IS_INPUT_EXPANDED":"false","UI_PROP_IS_OUTPUT_EXPANDED":"false"},"stepReference":{"type":"uri","path":"/dataFlows/steps/a7190700-f59c-4a94-afe2-214ce639fcde"},"arguments":{"codeOptions":{"code":"\nlibname gym \"/nfs/demo/sasdemo/data\";\n","logHTML":"","resultsHTML":"","variables":[],"contentType":"embedded"}},"portMappings":[]}},"parameters":{},"sourceVersion":2,"stickyNotes":[],"version":4,"properties":{"UI_PROP_DF_OPTIMIZE":"false","UI_PROP_DF_EXECUTION_ORDERED":"true"}},"dataFlowReference":null,"executionBindings":{"sessionId":"f4cb8793-2ae1-4709-b987-25ad86998725","environmentId":"Compute","contextId":"","arguments":{"__NO_OPTIMIZE":{"argumentType":"string","value":"true"}},"tempTablePrefix":"","sources":null}}},"id-1665035852250-10352":{"nodeType":"dataFlow","id":"id-1665035852250-10352","version":1,"name":"Swimlane 2","description":"","priority":1,"note":null,"properties":{"UI_PROP_IS_EXPANDED":"true","UI_PROP_LOCATION":"0 172.338623046875"},"stepId":"SWIMLANE_STEP","dataFlowAndBindings":{"dataFlow":{"id":null,"connections":[{"sourcePort":{"node":"id-1665035045503-4374","portName":"outTable","index":0},"targetPort":{"node":"id-1665035015754-4077","portName":"inTable","index":0}},{"sourcePort":{"node":"id-1665035015754-4077","portName":"outTables","index":0},"targetPort":{"node":"id-1665035424035-5928","portName":"inTables","index":0}},{"sourcePort":{"node":"id-1665035424035-5928","portName":"outTable","index":0},"targetPort":{"node":"id-1665035795643-9296","portName":"inTable","index":0}},{"sourcePort":{"node":"id-1665035795643-9296","portName":"outTable","index":0},"targetPort":{"node":"id-1665035893116-11182","portName":"inTables","index":0}},{"sourcePort":{"node":"id-1665035795643-9296","portName":"outTable","index":0},"targetPort":{"node":"id-1665049322932-1374","portName":"inTables","index":0}}],"createdBy":null,"creationTimeStamp":"2025-08-21T08:21:32.512Z","description":"","eTag":null,"extendedProperties":{},"modifiedBy":null,"modifiedTimeStamp":"2025-08-21T08:21:32.512Z","name":"","nodes":{"id-1665035893116-11182":{"nodeType":"step","id":"id-1665035893116-11182","version":1,"name":"EDA","description":"","priority":0,"note":null,"properties":{"UI_PROP_LOCATION":"736 199.338623046875","UI_PROP_INPUT_PORT|inTables|0":"|Input tables 1|Input tables","UI_PROP_OUTPUT_PORT|outTables|0":"|Output tables 1|Output tables","UI_PROP_IS_INPUT_EXPANDED":"false","UI_PROP_IS_OUTPUT_EXPANDED":"false"},"stepReference":{"type":"uri","path":"/dataFlows/steps/a7190700-f59c-4a94-afe2-214ce639fcde"},"arguments":{"codeOptions":{"code":"title \"Investigation of Members\";\n\n/*look at first 5 rows of data*/\nproc print data=data.d_members (obs=5) style(header)={cellwidth=90px} label;\nrun;\n\n/* Investigate height vs weight */\nproc sgplot data=data.d_members;\n  heatmap x=height y=weight / nxbins=70 nybins=70;\nrun;\n","logHTML":"","resultsHTML":"","variables":[{"name":"_input1","value":{"referenceType":"inputPort","portName":"inTables","portIndex":0}},{"name":"_output1","value":{"referenceType":"outputPort","portName":"outTables","portIndex":0,"arguments":{}}}],"contentType":"embedded"}},"portMappings":[{"mappingType":"tableStructure","portName":"outTables","portIndex":0,"tableStructure":{"columnDefinitions":[]}}]},"id-1665035795643-9296":{"nodeType":"outputTable","id":"id-1665035795643-9296","version":1,"name":"D_MEMBERS","description":"","priority":1,"note":null,"properties":{"UI_PROP_LOCATION":"584 202.338623046875","UI_PROP_INPUT_PORT|inTable|0":"|undefined 1|","UI_PROP_OUTPUT_PORT|outTable|0":"|undefined 1|","usePersistedTableStructure":"false"},"tableReference":{"referenceType":"parameter","parameterId":"id-1665035795643-9296"},"outputTableArguments":{"advancedOptions":[],"arguments":{}}},"id-1665035424035-5928":{"nodeType":"step","id":"id-1665035424035-5928","version":1,"name":"Select columns","description":"","priority":2,"note":null,"properties":{"UI_PROP_LOCATION":"414 261.338623046875","UI_PROP_INPUT_PORT|inTables|0":"|Input tables 1|Query input tables","UI_PROP_OUTPUT_PORT|outTable|0":"|Output table 1|Query output table","UI_PROP_IS_INPUT_EXPANDED":"false","UI_PROP_IS_OUTPUT_EXPANDED":"false","autoSelectGroups":"true"},"stepReference":{"type":"uri","path":"/dataFlows/steps/c072ab75-0a02-4aa1-acf3-63fe9c17a711"},"arguments":{"sessionId":"","fedSQL":false,"selectDistinct":false,"useOutObs":false,"outObs":0,"dataSetOptions":"","outputMode":"TABLE","useInObs":false,"inObs":0,"explicitPassthroughEnabled":false,"selectedColumns":[{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"Gym_Name"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"2d1ac23e-f268-499e-a914-3bd6c3e4c91f"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"Country"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"993719e7-d0b0-4b67-bbb3-006f0304ac50"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"Gym_Size"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"6fcec41f-fd06-4853-b073-2a7932109929"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"member_type"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"c975c2d4-2bf6-4e32-aa88-e1fde6ba7833"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"member_id"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"5fcef312-e7ba-432c-a4d1-ee0aead78028"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"start_date"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"464c4d59-b1ce-4ecb-adc7-f642c2ff8563"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"start_month"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"f8c5068f-ae8b-469c-99b9-778aa4215adc"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"start_year"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"6edd97ad-b286-41a5-b0fa-95fdbe862332"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"join_fee"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"ddcddf6d-af6e-4713-831c-7e7c10109882"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"total_payments"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"8c3e5cca-5140-457d-92a5-4286d036c2e8"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"monthly_fee"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"6a9a9cae-5325-45ca-bee0-b9fc7a1ccd9f"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"height"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"13dbf128-f553-4303-b5f4-27b034261bd2"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"weight"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"fb83f4d1-ceb6-4b92-a96d-1b9279fe3d51"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"avg_visits_week"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"64c06493-c760-4968-bd05-2b4435640bf9"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"distance_travelled"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"f631e4c9-4a21-45be-b08f-7349d7c8ecfd"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"gender"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"bf7fcd4e-d2dd-431d-a644-c09ddd49073e"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"ageband"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"cd3a66ef-2a64-48b2-a0b8-f2393d8b1c93"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"gp_ref"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"8f0523d7-3b8d-46be-9137-7118437d8499"},{"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"avg_visit_length"},"isModified":false,"modifiedColumn":null,"isCalculated":false,"calculatedColumn":null,"expressionText":null,"_uuid":"8747c8f8-faff-4a26-aa1f-5802559601cb"}],"queryJoins":null,"joinFormattedFilter":"","whereQuickFilters":[],"havingQuickFilters":[],"orderByColumns":[],"groupByColumns":[],"explicitSqlSource":false,"calculatedColumns":[],"inTables":[{"referenceType":"inputPort","portName":"inTables","portIndex":0,"arguments":{"alias":"t1"}}],"outTable":{"referenceType":"outputPort","portName":"outTable","portIndex":0,"arguments":{}}},"portMappings":[]},"id-1665035045503-4374":{"nodeType":"table","id":"id-1665035045503-4374","version":1,"name":"MEMBERS","description":"","priority":3,"note":null,"properties":{"UI_PROP_LOCATION":"65 289.338623046875","UI_PROP_INPUT_PORT|inTable|0":"|inTable|","UI_PROP_OUTPUT_PORT|outTable|0":"|undefined 1|","usePersistedTableStructure":"false"},"tableReference":{"referenceType":"parameter","parameterId":"id-1665035045503-4374"}},"id-1665035015754-4077":{"nodeType":"step","id":"id-1665035015754-4077","version":1,"name":"Branch Rows","description":"","priority":4,"note":null,"properties":{"UI_PROP_LOCATION":"244 306.338623046875","UI_PROP_INPUT_PORT|inTable|0":"|Input table 1|Input table","UI_PROP_OUTPUT_PORT|outTables|0":"|Output tables 1|Output tables","UI_PROP_OUTPUT_PORT|outTables|1":"|Output tables 2|Output tables","UI_PROP_IS_INPUT_EXPANDED":"false","UI_PROP_IS_OUTPUT_EXPANDED":"false"},"stepReference":{"type":"uri","path":"/dataFlows/steps/68e987dd-bf9c-4f04-967c-e2bad96348b9"},"arguments":{"filters":[{"quickFilters":[{"matchCase":false,"quoteStrings":true,"inColumn":{"referenceType":"column","port":"inTable","portIndex":0,"columnName":"Country"},"value":["England"],"operator":"equal","useRaw":true,"logicalOperator":"AND","index":0,"_uuid":"47f6e40d-2b52-4472-8424-6ae772ef34ab","allowMacros":false}],"outTable":{"referenceType":"outputPort","portName":"outTables","portIndex":0,"arguments":{}},"isCollapsed":false},{"quickFilters":[{"matchCase":false,"quoteStrings":true,"inColumn":{"referenceType":"column","port":"inTable","portIndex":0,"columnName":"Country"},"value":["Scotland"],"operator":"equal","useRaw":true,"logicalOperator":"AND","index":0,"_uuid":"b8ed0dd5-2920-4128-8c00-d30041f5d7d1","allowMacros":false}],"outTable":{"referenceType":"outputPort","portName":"outTables","portIndex":1,"arguments":{}},"isCollapsed":false}],"inTable":{"referenceType":"inputPort","portName":"inTable","portIndex":0,"arguments":{"alias":"t1"}},"outTables":[{"referenceType":"outputPort","portName":"outTables","portIndex":0,"arguments":{}},{"referenceType":"outputPort","portName":"outTables","portIndex":1,"arguments":{}}]},"portMappings":[]},"id-1665049322932-1374":{"nodeType":"step","id":"id-1665049322932-1374","version":1,"name":"Query","description":"","priority":5,"note":null,"properties":{"UI_PROP_LOCATION":"731 312.338623046875","UI_PROP_INPUT_PORT|inTables|0":"|Input tables 1|Query input tables","UI_PROP_OUTPUT_PORT|outTable|0":"|Output table 1|Query output table","UI_PROP_IS_INPUT_EXPANDED":"false","UI_PROP_IS_OUTPUT_EXPANDED":"false","autoSelectGroups":"false"},"stepReference":{"type":"uri","path":"/dataFlows/steps/c072ab75-0a02-4aa1-acf3-63fe9c17a711"},"arguments":{"sessionId":"","fedSQL":false,"selectDistinct":false,"useOutObs":false,"outObs":0,"dataSetOptions":"","outputMode":"TABLE","useInObs":false,"inObs":0,"explicitPassthroughEnabled":false,"selectedColumns":[{"inColumn":null,"isModified":false,"modifiedColumn":null,"isCalculated":true,"calculatedColumn":{"referenceType":"columnDefinition","columnDefinition":{"name":"FREQ_height","version":2,"index":0,"byteLength":8,"charLength":-1,"label":"Height (cm)","type":"Numeric","Aggregate":"","rawLength":8,"formattedLength":12},"outputPort":"outTable","outputPortIndex":0,"version":1,"impactedColumns":[{"columnReference":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"height"},"replaced":false}]},"expressionText":null,"aggregate":"FREQ","_uuid":"9c56d6b7-472a-4500-b0c7-a1a31eea20a4"},{"inColumn":null,"isModified":false,"modifiedColumn":null,"isCalculated":true,"calculatedColumn":{"referenceType":"columnDefinition","columnDefinition":{"name":"MAX_weight","version":2,"index":1,"byteLength":8,"charLength":-1,"label":"Weight (kg)","type":"Numeric","format":{"name":"COMMA12.1","length":12,"decimals":1},"Aggregate":"","rawLength":8,"formattedLength":12},"outputPort":"outTable","outputPortIndex":0,"version":1,"impactedColumns":[{"columnReference":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"weight"},"replaced":false}]},"expressionText":null,"aggregate":"MAX","_uuid":"f3e7ee3d-38fe-4039-8c4d-fcf407cde402"}],"queryJoins":null,"joinFormattedFilter":"","whereQuickFilters":[],"havingQuickFilters":[],"orderByColumns":[],"groupByColumns":[{"isCalculated":false,"inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"member_type"},"expressionText":"","calculatedColumnName":""}],"explicitSqlSource":false,"calculatedColumns":[{"name":"FREQ_height","version":2,"index":0,"byteLength":8,"charLength":-1,"label":"Height (cm)","type":"Numeric","Aggregate":"","rawLength":8,"formattedLength":12,"unresolved":false,"originalSource":"id-1665035045503-4374","inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"height"},"expressionText":"","aggregate":"FREQ","source":"height"},{"name":"MAX_weight","version":2,"index":1,"byteLength":8,"charLength":-1,"label":"Weight (kg)","type":"Numeric","format":{"name":"COMMA12.1","length":12,"decimals":1},"Aggregate":"","rawLength":8,"formattedLength":12,"unresolved":false,"originalSource":"id-1665035045503-4374","inColumn":{"referenceType":"column","port":"inTables","portIndex":0,"columnName":"weight"},"expressionText":"","aggregate":"MAX","source":"weight"}],"inTables":[{"referenceType":"inputPort","portName":"inTables","portIndex":0,"arguments":{"alias":"t1"}}],"outTable":{"referenceType":"outputPort","portName":"outTable","portIndex":0,"arguments":{}}},"portMappings":[]}},"parameters":{"id-1665035795643-9296":{"id":"id-1665035795643-9296","name":"D_MEMBERS","version":2,"parameterUsage":"OUTPUT","parameterType":"table","defaultValue":{"table":{"name":"D_MEMBERS","version":2,"dataSourceId":"Compute~fs~5fb71043-814f-42bb-b58f-c05dc73442d6~fs~GYM"},"source":{"id":"GYM","name":"GYM","version":2,"parentId":"5fb71043-814f-42bb-b58f-c05dc73442d6","providerId":"Compute","hasTables":true,"hasEngines":false,"createdBy":"","modifiedBy":"","attributes":{"physicalName":"/nfs/demo/sasdemo/data","concatenationCount":0,"engineName":"V9","fileFormat":"7","flags":32,"libref":"GYM","isHadoop":false}}}},"id-1665035045503-4374":{"id":"id-1665035045503-4374","name":"MEMBERS","version":2,"parameterUsage":"INPUT","parameterType":"tableStructure","defaultValue":{"table":{"name":"MEMBERS","type":"dataTable","version":3,"creationTimeStamp":"2025-08-21T08:12:08.345Z","modifiedTimeStamp":"2025-08-21T08:12:08.345Z","providerId":"Compute","dataSourceId":"Compute~fs~5fb71043-814f-42bb-b58f-c05dc73442d6~fs~GYM","attributes":{"id":"MEMBERS","libref":"GYM","engine":"V9","compressionRoutine":"NO","bookmarkLength":12,"logicalRecordCount":142909,"columnCount":24,"rowCount":142909,"physicalRecordCount":142909,"recordLength":232,"encoding":"utf-8  Unicode (UTF-8)","isCas":false,"isReadOnly":false,"eTag":"\"qfkw16vt\"","dataTableType":"table"}},"source":{"id":"GYM","name":"GYM","version":2,"parentId":"5fb71043-814f-42bb-b58f-c05dc73442d6","providerId":"Compute","hasTables":true,"hasEngines":false,"createdBy":"","modifiedBy":"","attributes":{"physicalName":"/nfs/demo/sasdemo/data","concatenationCount":0,"engineName":"V9","fileFormat":"7","flags":32,"libref":"GYM","isHadoop":false}}},"columns":[{"name":"Gym_ID","version":2,"index":0,"byteLength":8,"charLength":8,"label":"Gym ID","type":"Char","Aggregate":"","rawLength":8,"formattedLength":0},{"name":"Gym_Name","version":2,"index":1,"byteLength":32,"charLength":32,"label":"Gym Name","type":"Char","Aggregate":"","rawLength":32,"formattedLength":0},{"name":"Country","version":2,"index":2,"byteLength":32,"charLength":32,"type":"Char","Aggregate":"","rawLength":32,"formattedLength":0},{"name":"Gym_Latitude","version":2,"index":3,"byteLength":8,"charLength":-1,"label":"Gym Latitude","type":"Numeric","Aggregate":"","rawLength":8,"formattedLength":0},{"name":"Gym_Longitude","version":2,"index":4,"byteLength":8,"charLength":-1,"label":"Gym Longitude","type":"Numeric","Aggregate":"","rawLength":8,"formattedLength":0},{"name":"Gym_Target_Members","version":2,"index":5,"byteLength":8,"charLength":-1,"label":"Gym Target Members","type":"Numeric","Aggregate":"","rawLength":8,"formattedLength":0},{"name":"Gym_Current_Members","version":2,"index":6,"byteLength":8,"charLength":-1,"label":"Gym Current Members","type":"Numeric","Aggregate":"","rawLength":8,"formattedLength":0},{"name":"Gym_Size","version":2,"index":7,"byteLength":8,"charLength":8,"label":"Gym Size","type":"Char","Aggregate":"","rawLength":8,"formattedLength":0},{"name":"member_type","version":2,"index":8,"byteLength":8,"charLength":8,"label":"Membership Type","type":"Char","Aggregate":"","rawLength":8,"formattedLength":0},{"name":"member_id","version":2,"index":9,"byteLength":12,"charLength":12,"label":"Member ID","type":"Char","Aggregate":"","rawLength":12,"formattedLength":0},{"name":"start_date","version":2,"index":10,"byteLength":8,"charLength":-1,"label":"Start Date","type":"Numeric","format":{"name":"DATE9.","length":9},"Aggregate":"","rawLength":8,"formattedLength":9},{"name":"start_month","version":2,"index":11,"byteLength":8,"charLength":-1,"label":"Start Month","type":"Numeric","format":{"name":"MONYY5.","length":5},"Aggregate":"","rawLength":8,"formattedLength":5},{"name":"start_year","version":2,"index":12,"byteLength":8,"charLength":-1,"label":"Start Year","type":"Numeric","format":{"name":"YEAR."},"Aggregate":"","rawLength":8,"formattedLength":0},{"name":"join_fee","version":2,"index":13,"byteLength":8,"charLength":-1,"label":"Joining Fee","type":"Numeric","format":{"name":"NLMNLGBP12.2","length":12,"decimals":2},"Aggregate":"","rawLength":8,"formattedLength":12},{"name":"total_payments","version":2,"index":14,"byteLength":8,"charLength":-1,"label":"Total Membership Costs","type":"Numeric","format":{"name":"NLMNLGBP12.2","length":12,"decimals":2},"Aggregate":"","rawLength":8,"formattedLength":12},{"name":"monthly_fee","version":2,"index":15,"byteLength":8,"charLength":-1,"label":"Monthly Fee","type":"Numeric","format":{"name":"NLMNLGBP12.2","length":12,"decimals":2},"Aggregate":"","rawLength":8,"formattedLength":12},{"name":"height","version":2,"index":16,"byteLength":8,"charLength":-1,"label":"Height (cm)","type":"Numeric","format":{"name":"COMMA12.1","length":12,"decimals":1},"Aggregate":"","rawLength":8,"formattedLength":12},{"name":"weight","version":2,"index":17,"byteLength":8,"charLength":-1,"label":"Weight (kg)","type":"Numeric","format":{"name":"COMMA12.1","length":12,"decimals":1},"Aggregate":"","rawLength":8,"formattedLength":12},{"name":"avg_visits_week","version":2,"index":18,"byteLength":8,"charLength":-1,"label":"Average Visits per Week","type":"Numeric","format":{"name":"COMMA12.1","length":12,"decimals":1},"Aggregate":"","rawLength":8,"formattedLength":12},{"name":"distance_travelled","version":2,"index":19,"byteLength":8,"charLength":-1,"label":"Distance Travelled (miles)","type":"Numeric","format":{"name":"COMMA12.1","length":12,"decimals":1},"Aggregate":"","rawLength":8,"formattedLength":12},{"name":"gender","version":2,"index":20,"byteLength":6,"charLength":6,"label":"Gender","type":"Char","Aggregate":"","rawLength":6,"formattedLength":0},{"name":"ageband","version":2,"index":21,"byteLength":5,"charLength":5,"label":"Age Band","type":"Char","Aggregate":"","rawLength":5,"formattedLength":0},{"name":"gp_ref","version":2,"index":22,"byteLength":1,"charLength":1,"label":"GP Referral","type":"Char","Aggregate":"","rawLength":1,"formattedLength":0},{"name":"avg_visit_length","version":2,"index":23,"byteLength":8,"charLength":-1,"label":"Average Visit Length (mins)","type":"Numeric","Aggregate":"","rawLength":8,"formattedLength":0}]}},"sourceVersion":2,"stickyNotes":[],"version":4,"properties":{"UI_PROP_DF_OPTIMIZE":"false","UI_PROP_DF_EXECUTION_ORDERED":"true"}},"dataFlowReference":null,"executionBindings":{"sessionId":"f4cb8793-2ae1-4709-b987-25ad86998725","environmentId":"Compute","contextId":"","arguments":{"__NO_OPTIMIZE":{"argumentType":"string","value":"true"}},"tempTablePrefix":"","sources":null}}}},"parameters":{},"sourceVersion":2,"stickyNotes":[],"version":4,"properties":{"UI_PROP_DF_OPTIMIZE":"false","UI_PROP_DF_EXECUTION_ORDERED":"true"}}
+{
+    "id": "\"ke8shzrzfu\"",
+    "connections": [],
+    "creationTimeStamp": "2025-08-21T08:21:32.512Z",
+    "description": "",
+    "eTag": "\"ke8shzrzfu\"",
+    "extendedProperties": {},
+    "modifiedTimeStamp": "2025-08-21T08:20:23.308Z",
+    "name": "Example Flow.flw",
+    "nodes": {
+        "id-1665035852227-10347": {
+            "nodeType": "dataFlow",
+            "id": "id-1665035852227-10347",
+            "version": 1,
+            "name": "Swimlane 1",
+            "description": "",
+            "priority": 0,
+            "note": null,
+            "properties": {
+                "UI_PROP_IS_EXPANDED": "true",
+                "UI_PROP_LOCATION": "0 36.338623046875"
+            },
+            "stepId": "SWIMLANE_STEP",
+            "dataFlowAndBindings": {
+                "dataFlow": {
+                    "id": null,
+                    "connections": [],
+                    "createdBy": null,
+                    "creationTimeStamp": "2025-08-21T08:21:32.511Z",
+                    "description": "",
+                    "eTag": null,
+                    "extendedProperties": {},
+                    "modifiedBy": null,
+                    "modifiedTimeStamp": "2025-08-21T08:21:32.511Z",
+                    "name": "",
+                    "nodes": {
+                        "id-1665034886019-3426": {
+                            "nodeType": "step",
+                            "id": "id-1665034886019-3426",
+                            "version": 1,
+                            "name": "Libname",
+                            "description": "",
+                            "priority": 0,
+                            "note": null,
+                            "properties": {
+                                "UI_PROP_LOCATION": "65 63.338623046875",
+                                "UI_PROP_IS_INPUT_EXPANDED": "false",
+                                "UI_PROP_IS_OUTPUT_EXPANDED": "false"
+                            },
+                            "stepReference": {
+                                "type": "uri",
+                                "path": "/dataFlows/steps/a7190700-f59c-4a94-afe2-214ce639fcde"
+                            },
+                            "arguments": {
+                                "codeOptions": {
+                                    "code": "\nlibname gym \"/nfs/demo/sasdemo/data\";\n",
+                                    "logHTML": "",
+                                    "resultsHTML": "",
+                                    "variables": [],
+                                    "contentType": "embedded"
+                                }
+                            },
+                            "portMappings": []
+                        }
+                    },
+                    "parameters": {},
+                    "sourceVersion": 2,
+                    "stickyNotes": [],
+                    "version": 4,
+                    "properties": {
+                        "UI_PROP_DF_OPTIMIZE": "false",
+                        "UI_PROP_DF_EXECUTION_ORDERED": "true"
+                    }
+                },
+                "dataFlowReference": null,
+                "executionBindings": {
+                    "sessionId": "f4cb8793-2ae1-4709-b987-25ad86998725",
+                    "environmentId": "Compute",
+                    "contextId": "",
+                    "arguments": {
+                        "__NO_OPTIMIZE": {
+                            "argumentType": "string",
+                            "value": "true"
+                        }
+                    },
+                    "tempTablePrefix": "",
+                    "sources": null
+                }
+            }
+        },
+        "id-1665035852250-10352": {
+            "nodeType": "dataFlow",
+            "id": "id-1665035852250-10352",
+            "version": 1,
+            "name": "Swimlane 2",
+            "description": "",
+            "priority": 1,
+            "note": null,
+            "properties": {
+                "UI_PROP_IS_EXPANDED": "true",
+                "UI_PROP_LOCATION": "0 172.338623046875"
+            },
+            "stepId": "SWIMLANE_STEP",
+            "dataFlowAndBindings": {
+                "dataFlow": {
+                    "id": null,
+                    "connections": [
+                        {
+                            "sourcePort": {
+                                "node": "id-1665035045503-4374",
+                                "portName": "outTable",
+                                "index": 0
+                            },
+                            "targetPort": {
+                                "node": "id-1665035015754-4077",
+                                "portName": "inTable",
+                                "index": 0
+                            }
+                        },
+                        {
+                            "sourcePort": {
+                                "node": "id-1665035015754-4077",
+                                "portName": "outTables",
+                                "index": 0
+                            },
+                            "targetPort": {
+                                "node": "id-1665035424035-5928",
+                                "portName": "inTables",
+                                "index": 0
+                            }
+                        },
+                        {
+                            "sourcePort": {
+                                "node": "id-1665035424035-5928",
+                                "portName": "outTable",
+                                "index": 0
+                            },
+                            "targetPort": {
+                                "node": "id-1665035795643-9296",
+                                "portName": "inTable",
+                                "index": 0
+                            }
+                        },
+                        {
+                            "sourcePort": {
+                                "node": "id-1665035795643-9296",
+                                "portName": "outTable",
+                                "index": 0
+                            },
+                            "targetPort": {
+                                "node": "id-1665035893116-11182",
+                                "portName": "inTables",
+                                "index": 0
+                            }
+                        },
+                        {
+                            "sourcePort": {
+                                "node": "id-1665035795643-9296",
+                                "portName": "outTable",
+                                "index": 0
+                            },
+                            "targetPort": {
+                                "node": "id-1665049322932-1374",
+                                "portName": "inTables",
+                                "index": 0
+                            }
+                        }
+                    ],
+                    "createdBy": null,
+                    "creationTimeStamp": "2025-08-21T08:21:32.512Z",
+                    "description": "",
+                    "eTag": null,
+                    "extendedProperties": {},
+                    "modifiedBy": null,
+                    "modifiedTimeStamp": "2025-08-21T08:21:32.512Z",
+                    "name": "",
+                    "nodes": {
+                        "id-1665035893116-11182": {
+                            "nodeType": "step",
+                            "id": "id-1665035893116-11182",
+                            "version": 1,
+                            "name": "EDA",
+                            "description": "",
+                            "priority": 0,
+                            "note": null,
+                            "properties": {
+                                "UI_PROP_LOCATION": "736 199.338623046875",
+                                "UI_PROP_INPUT_PORT|inTables|0": "|Input tables 1|Input tables",
+                                "UI_PROP_OUTPUT_PORT|outTables|0": "|Output tables 1|Output tables",
+                                "UI_PROP_IS_INPUT_EXPANDED": "false",
+                                "UI_PROP_IS_OUTPUT_EXPANDED": "false"
+                            },
+                            "stepReference": {
+                                "type": "uri",
+                                "path": "/dataFlows/steps/a7190700-f59c-4a94-afe2-214ce639fcde"
+                            },
+                            "arguments": {
+                                "codeOptions": {
+                                    "code": "title \"Investigation of Members\";\n\n/*look at first 5 rows of data*/\nproc print data=gym.d_members (obs=5) style(header)={cellwidth=90px} label;\nrun;\n\n/* Investigate height vs weight */\nproc sgplot data=gym.d_members;\n  heatmap x=height y=weight / nxbins=70 nybins=70;\nrun;\n",
+                                    "logHTML": "",
+                                    "resultsHTML": "",
+                                    "variables": [
+                                        {
+                                            "name": "_input1",
+                                            "value": {
+                                                "referenceType": "inputPort",
+                                                "portName": "inTables",
+                                                "portIndex": 0
+                                            }
+                                        },
+                                        {
+                                            "name": "_output1",
+                                            "value": {
+                                                "referenceType": "outputPort",
+                                                "portName": "outTables",
+                                                "portIndex": 0,
+                                                "arguments": {}
+                                            }
+                                        }
+                                    ],
+                                    "contentType": "embedded"
+                                }
+                            },
+                            "portMappings": [
+                                {
+                                    "mappingType": "tableStructure",
+                                    "portName": "outTables",
+                                    "portIndex": 0,
+                                    "tableStructure": {
+                                        "columnDefinitions": []
+                                    }
+                                }
+                            ]
+                        },
+                        "id-1665035795643-9296": {
+                            "nodeType": "outputTable",
+                            "id": "id-1665035795643-9296",
+                            "version": 1,
+                            "name": "D_MEMBERS",
+                            "description": "",
+                            "priority": 1,
+                            "note": null,
+                            "properties": {
+                                "UI_PROP_LOCATION": "584 202.338623046875",
+                                "UI_PROP_INPUT_PORT|inTable|0": "|undefined 1|",
+                                "UI_PROP_OUTPUT_PORT|outTable|0": "|undefined 1|",
+                                "usePersistedTableStructure": "false"
+                            },
+                            "tableReference": {
+                                "referenceType": "parameter",
+                                "parameterId": "id-1665035795643-9296"
+                            },
+                            "outputTableArguments": {
+                                "advancedOptions": [],
+                                "arguments": {}
+                            }
+                        },
+                        "id-1665035424035-5928": {
+                            "nodeType": "step",
+                            "id": "id-1665035424035-5928",
+                            "version": 1,
+                            "name": "Select columns",
+                            "description": "",
+                            "priority": 2,
+                            "note": null,
+                            "properties": {
+                                "UI_PROP_LOCATION": "414 261.338623046875",
+                                "UI_PROP_INPUT_PORT|inTables|0": "|Input tables 1|Query input tables",
+                                "UI_PROP_OUTPUT_PORT|outTable|0": "|Output table 1|Query output table",
+                                "UI_PROP_IS_INPUT_EXPANDED": "false",
+                                "UI_PROP_IS_OUTPUT_EXPANDED": "false",
+                                "autoSelectGroups": "true"
+                            },
+                            "stepReference": {
+                                "type": "uri",
+                                "path": "/dataFlows/steps/c072ab75-0a02-4aa1-acf3-63fe9c17a711"
+                            },
+                            "arguments": {
+                                "sessionId": "",
+                                "fedSQL": false,
+                                "selectDistinct": false,
+                                "useOutObs": false,
+                                "outObs": 0,
+                                "dataSetOptions": "",
+                                "outputMode": "TABLE",
+                                "useInObs": false,
+                                "inObs": 0,
+                                "explicitPassthroughEnabled": false,
+                                "selectedColumns": [
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "Gym_Name"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "2d1ac23e-f268-499e-a914-3bd6c3e4c91f"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "Country"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "993719e7-d0b0-4b67-bbb3-006f0304ac50"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "Gym_Size"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "6fcec41f-fd06-4853-b073-2a7932109929"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "member_type"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "c975c2d4-2bf6-4e32-aa88-e1fde6ba7833"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "member_id"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "5fcef312-e7ba-432c-a4d1-ee0aead78028"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "start_date"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "464c4d59-b1ce-4ecb-adc7-f642c2ff8563"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "start_month"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "f8c5068f-ae8b-469c-99b9-778aa4215adc"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "start_year"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "6edd97ad-b286-41a5-b0fa-95fdbe862332"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "join_fee"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "ddcddf6d-af6e-4713-831c-7e7c10109882"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "total_payments"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "8c3e5cca-5140-457d-92a5-4286d036c2e8"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "monthly_fee"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "6a9a9cae-5325-45ca-bee0-b9fc7a1ccd9f"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "height"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "13dbf128-f553-4303-b5f4-27b034261bd2"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "weight"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "fb83f4d1-ceb6-4b92-a96d-1b9279fe3d51"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "avg_visits_week"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "64c06493-c760-4968-bd05-2b4435640bf9"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "distance_travelled"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "f631e4c9-4a21-45be-b08f-7349d7c8ecfd"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "gender"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "bf7fcd4e-d2dd-431d-a644-c09ddd49073e"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "ageband"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "cd3a66ef-2a64-48b2-a0b8-f2393d8b1c93"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "gp_ref"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "8f0523d7-3b8d-46be-9137-7118437d8499"
+                                    },
+                                    {
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "avg_visit_length"
+                                        },
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": false,
+                                        "calculatedColumn": null,
+                                        "expressionText": null,
+                                        "_uuid": "8747c8f8-faff-4a26-aa1f-5802559601cb"
+                                    }
+                                ],
+                                "queryJoins": null,
+                                "joinFormattedFilter": "",
+                                "whereQuickFilters": [],
+                                "havingQuickFilters": [],
+                                "orderByColumns": [],
+                                "groupByColumns": [],
+                                "explicitSqlSource": false,
+                                "calculatedColumns": [],
+                                "inTables": [
+                                    {
+                                        "referenceType": "inputPort",
+                                        "portName": "inTables",
+                                        "portIndex": 0,
+                                        "arguments": {
+                                            "alias": "t1"
+                                        }
+                                    }
+                                ],
+                                "outTable": {
+                                    "referenceType": "outputPort",
+                                    "portName": "outTable",
+                                    "portIndex": 0,
+                                    "arguments": {}
+                                }
+                            },
+                            "portMappings": []
+                        },
+                        "id-1665035045503-4374": {
+                            "nodeType": "table",
+                            "id": "id-1665035045503-4374",
+                            "version": 1,
+                            "name": "MEMBERS",
+                            "description": "",
+                            "priority": 3,
+                            "note": null,
+                            "properties": {
+                                "UI_PROP_LOCATION": "65 289.338623046875",
+                                "UI_PROP_INPUT_PORT|inTable|0": "|inTable|",
+                                "UI_PROP_OUTPUT_PORT|outTable|0": "|undefined 1|",
+                                "usePersistedTableStructure": "false"
+                            },
+                            "tableReference": {
+                                "referenceType": "parameter",
+                                "parameterId": "id-1665035045503-4374"
+                            }
+                        },
+                        "id-1665035015754-4077": {
+                            "nodeType": "step",
+                            "id": "id-1665035015754-4077",
+                            "version": 1,
+                            "name": "Branch Rows",
+                            "description": "",
+                            "priority": 4,
+                            "note": null,
+                            "properties": {
+                                "UI_PROP_LOCATION": "244 306.338623046875",
+                                "UI_PROP_INPUT_PORT|inTable|0": "|Input table 1|Input table",
+                                "UI_PROP_OUTPUT_PORT|outTables|0": "|Output tables 1|Output tables",
+                                "UI_PROP_OUTPUT_PORT|outTables|1": "|Output tables 2|Output tables",
+                                "UI_PROP_IS_INPUT_EXPANDED": "false",
+                                "UI_PROP_IS_OUTPUT_EXPANDED": "false"
+                            },
+                            "stepReference": {
+                                "type": "uri",
+                                "path": "/dataFlows/steps/68e987dd-bf9c-4f04-967c-e2bad96348b9"
+                            },
+                            "arguments": {
+                                "filters": [
+                                    {
+                                        "quickFilters": [
+                                            {
+                                                "matchCase": false,
+                                                "quoteStrings": true,
+                                                "inColumn": {
+                                                    "referenceType": "column",
+                                                    "port": "inTable",
+                                                    "portIndex": 0,
+                                                    "columnName": "Country"
+                                                },
+                                                "value": [
+                                                    "England"
+                                                ],
+                                                "operator": "equal",
+                                                "useRaw": true,
+                                                "logicalOperator": "AND",
+                                                "index": 0,
+                                                "_uuid": "47f6e40d-2b52-4472-8424-6ae772ef34ab",
+                                                "allowMacros": false
+                                            }
+                                        ],
+                                        "outTable": {
+                                            "referenceType": "outputPort",
+                                            "portName": "outTables",
+                                            "portIndex": 0,
+                                            "arguments": {}
+                                        },
+                                        "isCollapsed": false
+                                    },
+                                    {
+                                        "quickFilters": [
+                                            {
+                                                "matchCase": false,
+                                                "quoteStrings": true,
+                                                "inColumn": {
+                                                    "referenceType": "column",
+                                                    "port": "inTable",
+                                                    "portIndex": 0,
+                                                    "columnName": "Country"
+                                                },
+                                                "value": [
+                                                    "Scotland"
+                                                ],
+                                                "operator": "equal",
+                                                "useRaw": true,
+                                                "logicalOperator": "AND",
+                                                "index": 0,
+                                                "_uuid": "b8ed0dd5-2920-4128-8c00-d30041f5d7d1",
+                                                "allowMacros": false
+                                            }
+                                        ],
+                                        "outTable": {
+                                            "referenceType": "outputPort",
+                                            "portName": "outTables",
+                                            "portIndex": 1,
+                                            "arguments": {}
+                                        },
+                                        "isCollapsed": false
+                                    }
+                                ],
+                                "inTable": {
+                                    "referenceType": "inputPort",
+                                    "portName": "inTable",
+                                    "portIndex": 0,
+                                    "arguments": {
+                                        "alias": "t1"
+                                    }
+                                },
+                                "outTables": [
+                                    {
+                                        "referenceType": "outputPort",
+                                        "portName": "outTables",
+                                        "portIndex": 0,
+                                        "arguments": {}
+                                    },
+                                    {
+                                        "referenceType": "outputPort",
+                                        "portName": "outTables",
+                                        "portIndex": 1,
+                                        "arguments": {}
+                                    }
+                                ]
+                            },
+                            "portMappings": []
+                        },
+                        "id-1665049322932-1374": {
+                            "nodeType": "step",
+                            "id": "id-1665049322932-1374",
+                            "version": 1,
+                            "name": "Query",
+                            "description": "",
+                            "priority": 5,
+                            "note": null,
+                            "properties": {
+                                "UI_PROP_LOCATION": "731 312.338623046875",
+                                "UI_PROP_INPUT_PORT|inTables|0": "|Input tables 1|Query input tables",
+                                "UI_PROP_OUTPUT_PORT|outTable|0": "|Output table 1|Query output table",
+                                "UI_PROP_IS_INPUT_EXPANDED": "false",
+                                "UI_PROP_IS_OUTPUT_EXPANDED": "false",
+                                "autoSelectGroups": "false"
+                            },
+                            "stepReference": {
+                                "type": "uri",
+                                "path": "/dataFlows/steps/c072ab75-0a02-4aa1-acf3-63fe9c17a711"
+                            },
+                            "arguments": {
+                                "sessionId": "",
+                                "fedSQL": false,
+                                "selectDistinct": false,
+                                "useOutObs": false,
+                                "outObs": 0,
+                                "dataSetOptions": "",
+                                "outputMode": "TABLE",
+                                "useInObs": false,
+                                "inObs": 0,
+                                "explicitPassthroughEnabled": false,
+                                "selectedColumns": [
+                                    {
+                                        "inColumn": null,
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": true,
+                                        "calculatedColumn": {
+                                            "referenceType": "columnDefinition",
+                                            "columnDefinition": {
+                                                "name": "FREQ_height",
+                                                "version": 2,
+                                                "index": 0,
+                                                "byteLength": 8,
+                                                "charLength": -1,
+                                                "label": "Height (cm)",
+                                                "type": "Numeric",
+                                                "Aggregate": "",
+                                                "rawLength": 8,
+                                                "formattedLength": 12
+                                            },
+                                            "outputPort": "outTable",
+                                            "outputPortIndex": 0,
+                                            "version": 1,
+                                            "impactedColumns": [
+                                                {
+                                                    "columnReference": {
+                                                        "referenceType": "column",
+                                                        "port": "inTables",
+                                                        "portIndex": 0,
+                                                        "columnName": "height"
+                                                    },
+                                                    "replaced": false
+                                                }
+                                            ]
+                                        },
+                                        "expressionText": null,
+                                        "aggregate": "FREQ",
+                                        "_uuid": "9c56d6b7-472a-4500-b0c7-a1a31eea20a4"
+                                    },
+                                    {
+                                        "inColumn": null,
+                                        "isModified": false,
+                                        "modifiedColumn": null,
+                                        "isCalculated": true,
+                                        "calculatedColumn": {
+                                            "referenceType": "columnDefinition",
+                                            "columnDefinition": {
+                                                "name": "MAX_weight",
+                                                "version": 2,
+                                                "index": 1,
+                                                "byteLength": 8,
+                                                "charLength": -1,
+                                                "label": "Weight (kg)",
+                                                "type": "Numeric",
+                                                "format": {
+                                                    "name": "COMMA12.1",
+                                                    "length": 12,
+                                                    "decimals": 1
+                                                },
+                                                "Aggregate": "",
+                                                "rawLength": 8,
+                                                "formattedLength": 12
+                                            },
+                                            "outputPort": "outTable",
+                                            "outputPortIndex": 0,
+                                            "version": 1,
+                                            "impactedColumns": [
+                                                {
+                                                    "columnReference": {
+                                                        "referenceType": "column",
+                                                        "port": "inTables",
+                                                        "portIndex": 0,
+                                                        "columnName": "weight"
+                                                    },
+                                                    "replaced": false
+                                                }
+                                            ]
+                                        },
+                                        "expressionText": null,
+                                        "aggregate": "MAX",
+                                        "_uuid": "f3e7ee3d-38fe-4039-8c4d-fcf407cde402"
+                                    }
+                                ],
+                                "queryJoins": null,
+                                "joinFormattedFilter": "",
+                                "whereQuickFilters": [],
+                                "havingQuickFilters": [],
+                                "orderByColumns": [],
+                                "groupByColumns": [
+                                    {
+                                        "isCalculated": false,
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "member_type"
+                                        },
+                                        "expressionText": "",
+                                        "calculatedColumnName": ""
+                                    }
+                                ],
+                                "explicitSqlSource": false,
+                                "calculatedColumns": [
+                                    {
+                                        "name": "FREQ_height",
+                                        "version": 2,
+                                        "index": 0,
+                                        "byteLength": 8,
+                                        "charLength": -1,
+                                        "label": "Height (cm)",
+                                        "type": "Numeric",
+                                        "Aggregate": "",
+                                        "rawLength": 8,
+                                        "formattedLength": 12,
+                                        "unresolved": false,
+                                        "originalSource": "id-1665035045503-4374",
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "height"
+                                        },
+                                        "expressionText": "",
+                                        "aggregate": "FREQ",
+                                        "source": "height"
+                                    },
+                                    {
+                                        "name": "MAX_weight",
+                                        "version": 2,
+                                        "index": 1,
+                                        "byteLength": 8,
+                                        "charLength": -1,
+                                        "label": "Weight (kg)",
+                                        "type": "Numeric",
+                                        "format": {
+                                            "name": "COMMA12.1",
+                                            "length": 12,
+                                            "decimals": 1
+                                        },
+                                        "Aggregate": "",
+                                        "rawLength": 8,
+                                        "formattedLength": 12,
+                                        "unresolved": false,
+                                        "originalSource": "id-1665035045503-4374",
+                                        "inColumn": {
+                                            "referenceType": "column",
+                                            "port": "inTables",
+                                            "portIndex": 0,
+                                            "columnName": "weight"
+                                        },
+                                        "expressionText": "",
+                                        "aggregate": "MAX",
+                                        "source": "weight"
+                                    }
+                                ],
+                                "inTables": [
+                                    {
+                                        "referenceType": "inputPort",
+                                        "portName": "inTables",
+                                        "portIndex": 0,
+                                        "arguments": {
+                                            "alias": "t1"
+                                        }
+                                    }
+                                ],
+                                "outTable": {
+                                    "referenceType": "outputPort",
+                                    "portName": "outTable",
+                                    "portIndex": 0,
+                                    "arguments": {}
+                                }
+                            },
+                            "portMappings": []
+                        }
+                    },
+                    "parameters": {
+                        "id-1665035795643-9296": {
+                            "id": "id-1665035795643-9296",
+                            "name": "D_MEMBERS",
+                            "version": 2,
+                            "parameterUsage": "OUTPUT",
+                            "parameterType": "table",
+                            "defaultValue": {
+                                "table": {
+                                    "name": "D_MEMBERS",
+                                    "version": 2,
+                                    "dataSourceId": "Compute~fs~5fb71043-814f-42bb-b58f-c05dc73442d6~fs~GYM"
+                                },
+                                "source": {
+                                    "id": "GYM",
+                                    "name": "GYM",
+                                    "version": 2,
+                                    "parentId": "5fb71043-814f-42bb-b58f-c05dc73442d6",
+                                    "providerId": "Compute",
+                                    "hasTables": true,
+                                    "hasEngines": false,
+                                    "createdBy": "",
+                                    "modifiedBy": "",
+                                    "attributes": {
+                                        "physicalName": "/nfs/demo/sasdemo/data",
+                                        "concatenationCount": 0,
+                                        "engineName": "V9",
+                                        "fileFormat": "7",
+                                        "flags": 32,
+                                        "libref": "GYM",
+                                        "isHadoop": false
+                                    }
+                                }
+                            }
+                        },
+                        "id-1665035045503-4374": {
+                            "id": "id-1665035045503-4374",
+                            "name": "MEMBERS",
+                            "version": 2,
+                            "parameterUsage": "INPUT",
+                            "parameterType": "tableStructure",
+                            "defaultValue": {
+                                "table": {
+                                    "name": "MEMBERS",
+                                    "type": "dataTable",
+                                    "version": 3,
+                                    "creationTimeStamp": "2025-08-21T08:12:08.345Z",
+                                    "modifiedTimeStamp": "2025-08-21T08:12:08.345Z",
+                                    "providerId": "Compute",
+                                    "dataSourceId": "Compute~fs~5fb71043-814f-42bb-b58f-c05dc73442d6~fs~GYM",
+                                    "attributes": {
+                                        "id": "MEMBERS",
+                                        "libref": "GYM",
+                                        "engine": "V9",
+                                        "compressionRoutine": "NO",
+                                        "bookmarkLength": 12,
+                                        "logicalRecordCount": 142909,
+                                        "columnCount": 24,
+                                        "rowCount": 142909,
+                                        "physicalRecordCount": 142909,
+                                        "recordLength": 232,
+                                        "encoding": "utf-8  Unicode (UTF-8)",
+                                        "isCas": false,
+                                        "isReadOnly": false,
+                                        "eTag": "\"qfkw16vt\"",
+                                        "dataTableType": "table"
+                                    }
+                                },
+                                "source": {
+                                    "id": "GYM",
+                                    "name": "GYM",
+                                    "version": 2,
+                                    "parentId": "5fb71043-814f-42bb-b58f-c05dc73442d6",
+                                    "providerId": "Compute",
+                                    "hasTables": true,
+                                    "hasEngines": false,
+                                    "createdBy": "",
+                                    "modifiedBy": "",
+                                    "attributes": {
+                                        "physicalName": "/nfs/demo/sasdemo/data",
+                                        "concatenationCount": 0,
+                                        "engineName": "V9",
+                                        "fileFormat": "7",
+                                        "flags": 32,
+                                        "libref": "GYM",
+                                        "isHadoop": false
+                                    }
+                                }
+                            },
+                            "columns": [
+                                {
+                                    "name": "Gym_ID",
+                                    "version": 2,
+                                    "index": 0,
+                                    "byteLength": 8,
+                                    "charLength": 8,
+                                    "label": "Gym ID",
+                                    "type": "Char",
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 0
+                                },
+                                {
+                                    "name": "Gym_Name",
+                                    "version": 2,
+                                    "index": 1,
+                                    "byteLength": 32,
+                                    "charLength": 32,
+                                    "label": "Gym Name",
+                                    "type": "Char",
+                                    "Aggregate": "",
+                                    "rawLength": 32,
+                                    "formattedLength": 0
+                                },
+                                {
+                                    "name": "Country",
+                                    "version": 2,
+                                    "index": 2,
+                                    "byteLength": 32,
+                                    "charLength": 32,
+                                    "type": "Char",
+                                    "Aggregate": "",
+                                    "rawLength": 32,
+                                    "formattedLength": 0
+                                },
+                                {
+                                    "name": "Gym_Latitude",
+                                    "version": 2,
+                                    "index": 3,
+                                    "byteLength": 8,
+                                    "charLength": -1,
+                                    "label": "Gym Latitude",
+                                    "type": "Numeric",
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 0
+                                },
+                                {
+                                    "name": "Gym_Longitude",
+                                    "version": 2,
+                                    "index": 4,
+                                    "byteLength": 8,
+                                    "charLength": -1,
+                                    "label": "Gym Longitude",
+                                    "type": "Numeric",
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 0
+                                },
+                                {
+                                    "name": "Gym_Target_Members",
+                                    "version": 2,
+                                    "index": 5,
+                                    "byteLength": 8,
+                                    "charLength": -1,
+                                    "label": "Gym Target Members",
+                                    "type": "Numeric",
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 0
+                                },
+                                {
+                                    "name": "Gym_Current_Members",
+                                    "version": 2,
+                                    "index": 6,
+                                    "byteLength": 8,
+                                    "charLength": -1,
+                                    "label": "Gym Current Members",
+                                    "type": "Numeric",
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 0
+                                },
+                                {
+                                    "name": "Gym_Size",
+                                    "version": 2,
+                                    "index": 7,
+                                    "byteLength": 8,
+                                    "charLength": 8,
+                                    "label": "Gym Size",
+                                    "type": "Char",
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 0
+                                },
+                                {
+                                    "name": "member_type",
+                                    "version": 2,
+                                    "index": 8,
+                                    "byteLength": 8,
+                                    "charLength": 8,
+                                    "label": "Membership Type",
+                                    "type": "Char",
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 0
+                                },
+                                {
+                                    "name": "member_id",
+                                    "version": 2,
+                                    "index": 9,
+                                    "byteLength": 12,
+                                    "charLength": 12,
+                                    "label": "Member ID",
+                                    "type": "Char",
+                                    "Aggregate": "",
+                                    "rawLength": 12,
+                                    "formattedLength": 0
+                                },
+                                {
+                                    "name": "start_date",
+                                    "version": 2,
+                                    "index": 10,
+                                    "byteLength": 8,
+                                    "charLength": -1,
+                                    "label": "Start Date",
+                                    "type": "Numeric",
+                                    "format": {
+                                        "name": "DATE9.",
+                                        "length": 9
+                                    },
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 9
+                                },
+                                {
+                                    "name": "start_month",
+                                    "version": 2,
+                                    "index": 11,
+                                    "byteLength": 8,
+                                    "charLength": -1,
+                                    "label": "Start Month",
+                                    "type": "Numeric",
+                                    "format": {
+                                        "name": "MONYY5.",
+                                        "length": 5
+                                    },
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 5
+                                },
+                                {
+                                    "name": "start_year",
+                                    "version": 2,
+                                    "index": 12,
+                                    "byteLength": 8,
+                                    "charLength": -1,
+                                    "label": "Start Year",
+                                    "type": "Numeric",
+                                    "format": {
+                                        "name": "YEAR."
+                                    },
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 0
+                                },
+                                {
+                                    "name": "join_fee",
+                                    "version": 2,
+                                    "index": 13,
+                                    "byteLength": 8,
+                                    "charLength": -1,
+                                    "label": "Joining Fee",
+                                    "type": "Numeric",
+                                    "format": {
+                                        "name": "NLMNLGBP12.2",
+                                        "length": 12,
+                                        "decimals": 2
+                                    },
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 12
+                                },
+                                {
+                                    "name": "total_payments",
+                                    "version": 2,
+                                    "index": 14,
+                                    "byteLength": 8,
+                                    "charLength": -1,
+                                    "label": "Total Membership Costs",
+                                    "type": "Numeric",
+                                    "format": {
+                                        "name": "NLMNLGBP12.2",
+                                        "length": 12,
+                                        "decimals": 2
+                                    },
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 12
+                                },
+                                {
+                                    "name": "monthly_fee",
+                                    "version": 2,
+                                    "index": 15,
+                                    "byteLength": 8,
+                                    "charLength": -1,
+                                    "label": "Monthly Fee",
+                                    "type": "Numeric",
+                                    "format": {
+                                        "name": "NLMNLGBP12.2",
+                                        "length": 12,
+                                        "decimals": 2
+                                    },
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 12
+                                },
+                                {
+                                    "name": "height",
+                                    "version": 2,
+                                    "index": 16,
+                                    "byteLength": 8,
+                                    "charLength": -1,
+                                    "label": "Height (cm)",
+                                    "type": "Numeric",
+                                    "format": {
+                                        "name": "COMMA12.1",
+                                        "length": 12,
+                                        "decimals": 1
+                                    },
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 12
+                                },
+                                {
+                                    "name": "weight",
+                                    "version": 2,
+                                    "index": 17,
+                                    "byteLength": 8,
+                                    "charLength": -1,
+                                    "label": "Weight (kg)",
+                                    "type": "Numeric",
+                                    "format": {
+                                        "name": "COMMA12.1",
+                                        "length": 12,
+                                        "decimals": 1
+                                    },
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 12
+                                },
+                                {
+                                    "name": "avg_visits_week",
+                                    "version": 2,
+                                    "index": 18,
+                                    "byteLength": 8,
+                                    "charLength": -1,
+                                    "label": "Average Visits per Week",
+                                    "type": "Numeric",
+                                    "format": {
+                                        "name": "COMMA12.1",
+                                        "length": 12,
+                                        "decimals": 1
+                                    },
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 12
+                                },
+                                {
+                                    "name": "distance_travelled",
+                                    "version": 2,
+                                    "index": 19,
+                                    "byteLength": 8,
+                                    "charLength": -1,
+                                    "label": "Distance Travelled (miles)",
+                                    "type": "Numeric",
+                                    "format": {
+                                        "name": "COMMA12.1",
+                                        "length": 12,
+                                        "decimals": 1
+                                    },
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 12
+                                },
+                                {
+                                    "name": "gender",
+                                    "version": 2,
+                                    "index": 20,
+                                    "byteLength": 6,
+                                    "charLength": 6,
+                                    "label": "Gender",
+                                    "type": "Char",
+                                    "Aggregate": "",
+                                    "rawLength": 6,
+                                    "formattedLength": 0
+                                },
+                                {
+                                    "name": "ageband",
+                                    "version": 2,
+                                    "index": 21,
+                                    "byteLength": 5,
+                                    "charLength": 5,
+                                    "label": "Age Band",
+                                    "type": "Char",
+                                    "Aggregate": "",
+                                    "rawLength": 5,
+                                    "formattedLength": 0
+                                },
+                                {
+                                    "name": "gp_ref",
+                                    "version": 2,
+                                    "index": 22,
+                                    "byteLength": 1,
+                                    "charLength": 1,
+                                    "label": "GP Referral",
+                                    "type": "Char",
+                                    "Aggregate": "",
+                                    "rawLength": 1,
+                                    "formattedLength": 0
+                                },
+                                {
+                                    "name": "avg_visit_length",
+                                    "version": 2,
+                                    "index": 23,
+                                    "byteLength": 8,
+                                    "charLength": -1,
+                                    "label": "Average Visit Length (mins)",
+                                    "type": "Numeric",
+                                    "Aggregate": "",
+                                    "rawLength": 8,
+                                    "formattedLength": 0
+                                }
+                            ]
+                        }
+                    },
+                    "sourceVersion": 2,
+                    "stickyNotes": [],
+                    "version": 4,
+                    "properties": {
+                        "UI_PROP_DF_OPTIMIZE": "false",
+                        "UI_PROP_DF_EXECUTION_ORDERED": "true"
+                    }
+                },
+                "dataFlowReference": null,
+                "executionBindings": {
+                    "sessionId": "f4cb8793-2ae1-4709-b987-25ad86998725",
+                    "environmentId": "Compute",
+                    "contextId": "",
+                    "arguments": {
+                        "__NO_OPTIMIZE": {
+                            "argumentType": "string",
+                            "value": "true"
+                        }
+                    },
+                    "tempTablePrefix": "",
+                    "sources": null
+                }
+            }
+        }
+    },
+    "parameters": {},
+    "sourceVersion": 2,
+    "stickyNotes": [],
+    "version": 4,
+    "properties": {
+        "UI_PROP_DF_OPTIMIZE": "false",
+        "UI_PROP_DF_EXECUTION_ORDERED": "true"
+    }
+}
